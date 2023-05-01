@@ -1,7 +1,6 @@
 import React from "react";
-import Image from "next/image"
+import Image from "next/image";
 import Button from "./Button";
-
 
 const Hero = () => {
   return (
@@ -21,14 +20,14 @@ const Hero = () => {
         height={280}
       />
       <Image
-        src="/img/wave.png"
+        src="/img/wave.svg"
         alt="wave"
         className="absolute -z-[2]"
         objectFit="cover"
         layout="fill"
       />
       <div className="z-2">
-        <h1 className="text-white text-center text-4xl md:text-6xl font-bold max-w-[1000px] mx-auto">
+        <h1 className="text-white text-center text-2xl xs:text-4xl md:text-6xl font-bold max-w-[1000px] mx-auto">
           Effortless Attendance Tracking with QR Codes
         </h1>
         <p className="mt-4 text-base md:text-lg text-white text-center max-w-[630px] mx-auto">
@@ -36,10 +35,10 @@ const Hero = () => {
           record and organize data in real-time, saving you time and effort.
         </p>
         <div className="mt-8 flex gap-4 justify-center">
-          <Button color="light" size="lg">
+          <Button color="light" size={{ initial: "md", md: "lg" }}>
             For organisation
           </Button>
-          <Button color="light" size="lg">
+          <Button color="light" size={{ initial: "md", md: "lg" }}>
             For Worker
           </Button>
         </div>
