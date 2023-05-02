@@ -19,13 +19,46 @@ function Features() {
         width={119}
         height={70}
       />
-      <div className="flex flex-col md:flex-row gap-6 py-5 px-5">
-        <div className="grid grid-cols-1 basis-1/2">
-          <h1 className="text-white font-bold">
-            Features that makes us standout
-          </h1>
+      <div className="flex flex-col md:flex-row gap-20 items-center py-5 px-28 text-white">
+        <div className="grid grid-cols-1 basis-1/2 z-40">
+          <div className="flex flex-col gap-10">
+            <h1 className="text-xl md:text-4xl font-bold">
+              Features that makes us standout
+            </h1>
+            <div>
+              <p className="font-bold text-lg">
+                Clock in and out with QR-code scanning and Fingerprint
+              </p>
+              <p className="font-thin">
+                take your attendants by scanning a daily generated admin QR code
+                or finger print scanner
+              </p>
+            </div>
+            <div>
+              <p className="font-bold text-lg">
+                Clock in and out with QR-code scanning and Fingerprint
+              </p>
+              <p className="font-thin">
+                take your attendants by scanning a daily generated admin QR code
+                or finger print scanner
+              </p>
+            </div>
+            <div>
+              <p className="font-bold text-lg">
+                Clock in and out with QR-code scanning and Fingerprint
+              </p>
+              <p className="font-thin">
+                take your attendants by scanning a daily generated admin QR code
+                or finger print scanner
+              </p>
+            </div>
+          </div>
         </div>
-        <img src="/img/Mockup 1.png" alt="" className="basis-1/2" />
+        <img
+          src="/img/Mockup 1.svg"
+          alt=""
+          className="basis-1/2 h-[700px] z-40"
+        />
       </div>
     </div>
   );

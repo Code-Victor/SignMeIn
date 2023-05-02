@@ -10,7 +10,7 @@ function Why() {
       </h1>
       <div className="pt-9 flex flex-col gap-20 ">
         <div className="flex flex-col md:flex-row items-center gap-28 ">
-          <img src="/img/pana.png" alt="" className="basis-1/2 h-96" />
+          <img src="/img/pana.svg" alt="" className="basis-1/2 h-96" />
 
           <div className="flex flex-col gap-5 basis-1/2">
             <p>KEEP TRACK</p>
@@ -40,11 +40,11 @@ function Why() {
               owners who want to focus on growing their business.
             </p>
           </div>
-          <img src="/img/pana.png" alt="" className="basis-1/2 h-96" />
+          <img src="/img/pana.svg" alt="" className="basis-1/2 h-96" />
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-28">
-          <img src="/img/pana.png" alt="" className="basis-1/2 h-96" />
+          <img src="/img/pana.svg" alt="" className="basis-1/2 h-96" />
           <div className="flex flex-col gap-5 basis-1/2">
             <p>EASY TO USE</p>
             <p className="text-primary text-xl md:text-4xl font-bold">
