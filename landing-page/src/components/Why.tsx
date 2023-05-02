@@ -9,10 +9,10 @@ function Why() {
         Why should you use SignMeIn
       </h1>
       <div className="pt-9 flex flex-col gap-20 ">
-        <div className="flex flex-col md:flex-row items-center ">
-          <img src="/img/pana.png" alt="" className="flex-1" />
+        <div className="flex flex-col md:flex-row items-center gap-28 ">
+          <img src="/img/pana.png" alt="" className="basis-1/2 h-96" />
 
-          <div className="flex flex-col gap-5 flex-1">
+          <div className="flex flex-col gap-5 basis-1/2">
             <p>KEEP TRACK</p>
             <p className="text-primary text-xl md:text-4xl font-bold">
               Say Goodbye to Time-Tracking Hassles with SignMeIn
@@ -26,8 +26,8 @@ function Why() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="flex flex-col gap-5 flex-1">
+        <div className="flex flex-col md:flex-row items-center gap-28">
+          <div className="flex flex-col gap-5 basis-1/2">
             <p>SAVE TIME AND COST</p>
             <p className="text-primary text-xl md:text-4xl font-bold">
               Keep Your Business Running Smoothly with SignMeIn
@@ -40,12 +40,12 @@ function Why() {
               owners who want to focus on growing their business.
             </p>
           </div>
-          <img src="/img/pana.png" alt="" className="flex-1" />
+          <img src="/img/pana.png" alt="" className="basis-1/2 h-96" />
         </div>
 
-        <div className="flex flex-col md:flex-row items-center">
-          <img src="/img/pana.png" alt="" className="flex-1" />
-          <div className="flex flex-col gap-5 flex-1">
+        <div className="flex flex-col md:flex-row items-center gap-28">
+          <img src="/img/pana.png" alt="" className="basis-1/2 h-96" />
+          <div className="flex flex-col gap-5 basis-1/2">
             <p>EASY TO USE</p>
             <p className="text-primary text-xl md:text-4xl font-bold">
               Make Attendance Management a Breeze with SignMeIn
