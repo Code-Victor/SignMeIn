@@ -1,11 +1,11 @@
-import Image from 'next/image';
-import React from 'react'
-import Button from './Button';
+import Image from "next/image";
+import React from "react";
+import Button from "./Button";
 
 function Cta() {
   return (
-    <div className="bg-white py-8 px-5">
-      <div className="mx-auto bg-primary rounded-[32px] max-w-[1140px] overflow-hidden grid place-items-center relative">
+    <div className="bg-white py-10 md:py-12 px-5">
+      <div className="mx-auto shadow-lg bg-primary rounded-[32px] max-w-[1140px] overflow-hidden grid place-items-center relative">
         <Image
           src="/img/blob-1.svg"
           className="absolute top-0 right-0 min-w-[112px] w-[20%]"
@@ -33,4 +33,4 @@ function Cta() {
   );
 }
 
-export default Cta
+export default Cta;
