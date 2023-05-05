@@ -10,7 +10,7 @@ const Navbar = () => {
         </h1>
         <div className="flex gap-4">
           <Button size={{ initial: "md", md: "lg" }}>Sign in</Button>
-          <Button size={{ initial: "md", md: "lg" }} color="light" >
+          <Button color="light" >
             Sign up
           </Button>
         </div>
