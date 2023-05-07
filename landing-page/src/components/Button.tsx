@@ -14,11 +14,26 @@ const button = tv(
         md: "text-base px-3 py-2",
         lg: "px-4 py-3 text-lg",
       },
+      outline: {
+        true: "border-2 bg-transparent",
+      },
     },
     defaultVariants: {
       size: "md",
       color: "primary",
     },
+    compoundVariants: [
+      {
+        color: "primary",
+        outline: true,
+        class: "text-purple-700 border-primary bg-transparent",
+      },
+      {
+        color: "light",
+        outline: true,
+        class: "border-white  text-white",
+      },
+    ],
   },
   {
     responsiveVariants: true,
@@ -33,8 +48,8 @@ export interface ButtonProps
     VariantProps<typeof button>
   > {}
 
-function Button({ size, color, className, ...props }: ButtonProps) {
-  return <button className={button({ size, color, className })} {...props} />;
+function Button({ size, color, className,outline, ...props }: ButtonProps) {
+  return <button className={button({ size, color, className,outline })} {...props} />;
 }
 
 export default Button;
