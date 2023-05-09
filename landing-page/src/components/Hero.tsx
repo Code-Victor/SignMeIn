@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Button from "./Button";
-
+import Link from "next/link";
 const Hero = () => {
   return (
     <div className="bg-primary min-h-[calc(100vh_-_96px)] px-5 flex items-center justify-center relative isolate">
@@ -35,9 +35,11 @@ const Hero = () => {
           record and organize data in real-time, saving you time and effort.
         </p>
         <div className="mt-8 flex gap-4 justify-center">
-          <Button color="light" size={{ initial: "md", md: "lg" }}>
-            For organisation
-          </Button>
+          <Link href="/dashboard" >
+            <Button color="light" size={{ initial: "md", md: "lg" }}>
+              For organisation
+            </Button>
+          </Link>
           <Button color="light" size={{ initial: "md", md: "lg" }}>
             For Worker
           </Button>
