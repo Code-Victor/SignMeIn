@@ -22,11 +22,11 @@ const button = tv(
       size: "md",
       color: "primary",
     },
-    compoundVariants: [
+    compoundVariants: [ 
       {
         color: "primary",
         outline: true,
-        class: "text-purple-700 border-primary bg-transparent",
+        class: "text-[#663ed6!important] border-primary bg-transparent",
       },
       {
         color: "light",

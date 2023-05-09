@@ -1,4 +1,4 @@
-import { Footer, Navbar } from "@/components";
+import { Footer, Navbar } from "../components";
 import { Inter } from "next/font/google";
 import Image from "next/image";
 

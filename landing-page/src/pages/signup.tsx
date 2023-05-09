@@ -1,6 +1,6 @@
-import { Footer, Navbar } from "@/components";
+import { Footer, Navbar } from "../components";
 import Image from "next/image";
-1
+1;
 export default function Home() {
   return (
     <>
