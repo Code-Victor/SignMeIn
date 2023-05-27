@@ -1,24 +1,25 @@
 from rest_framework import serializers
+from django.contrib.auth.models import update_last_login
+from rest_framework.authentication import authenticate
 from rest_framework.validators import ValidationError
 from .models import CustomUser, Organizations, Workers
 import string
 import random
-# from rest_auth.registration.serializers import RegisterSerializer
-# from rest_framework.validators import UniqueValidator
-# from django.contrib.auth.password_validation import validate_password
-# from Workers.models import Workers
+from rest_framework_simplejwt.tokens import RefreshToken
 
+#Generate random password for workers
 def generate_random_password():
     # get random password of length 8 with letters, digits, and symbols
     characters = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(characters) for i in range(12))
     return password
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'email', 'username',  'is_organization'
+            'email', 'username',  'is_organization', 'is_worker'
         ]
 
 
@@ -62,8 +63,43 @@ class OrganizationRegisterSerializer(serializers.ModelSerializer):
             company_address = self.validated_data['company_address']
         )
         return user
+  
+class OrganizationCustomLoginSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(max_length=128, write_only=True)
+    access = serializers.CharField(read_only=True)
+    refresh = serializers.CharField(read_only=True)
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'password', 'access', 'refresh']
         
+    def validate(self, data):
+        email = data['email']
+        password = data['password']
+        if CustomUser.organization.filter(email=email):
+            user = authenticate(email=email, password=password)
         
+            if user is None:
+                raise serializers.ValidationError("Invalid login credentials")
+
+            try:
+                refresh = RefreshToken.for_user(user)
+                refresh_token = str(refresh)
+                access_token = str(refresh.access_token)
+
+                update_last_login(None, user)
+
+                validation = {
+                    'access': access_token,
+                    'refresh': refresh_token,
+                    'email': user.email,
+                }
+
+                return validation
+            except:
+                raise serializers.ValidationError("Invalid login credentials")
+    
+    
 class AddWorkerSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(max_length=50)
     last_name = serializers.CharField(max_length=50)
@@ -73,7 +109,7 @@ class AddWorkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'first_name', 'lastt_name', 'email', 
+            'first_name', 'last_name', 'email', 
             'gender', 'age', 'house_address'
         ]
         extra_kwargs = {

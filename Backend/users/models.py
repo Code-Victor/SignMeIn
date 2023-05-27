@@ -1,7 +1,17 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db.models.query import QuerySet
 
 # Create your models here.
+class OrganizationManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_organization=True)
+    
+class WorkersManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_worker=True)
+
+
 class CustomUser(AbstractUser):
     email = models.CharField(unique=True)
     username = None
@@ -19,6 +29,9 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
         return self.email
+    
+    organization = OrganizationManager()
+    workers = WorkersManager()
     
 
 class Organizations(models.Model):
