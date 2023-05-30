@@ -1,8 +1,15 @@
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 import Button from "./Button";
 
 const Navbar = ({ main = false }: { main?: boolean }) => {
+  const pathname = usePathname();
+  const home = pathname === "/";
+  const login = pathname === "/login";
+  const signup = pathname === "/signup";
+  console.log(pathname);
+
   return (
     <nav
       className={"flex justify-between " + (main ? "bg-primary" : "bg-white")}
@@ -17,19 +24,27 @@ const Navbar = ({ main = false }: { main?: boolean }) => {
           SignMeIn
         </h1>
         <div className="flex gap-4">
-          <Link href="/signin">
-            <Button size={{ initial: "md", md: "lg" }} outline={true}>
-              Sign in
-            </Button>
-          </Link>
-          <Link href="/signup">
-            <Button
-              size={{ initial: "md", md: "lg" }}
-              color={main ? "light" : "primary"}
-            >
-              Sign up
-            </Button>
-          </Link>
+          {login ? (
+            ""
+          ) : (
+            <Link href="/signin">
+              <Button size={{ initial: "md", md: "lg" }} outline={true}>
+                Sign in
+              </Button>
+            </Link>
+          )}
+          {signup ? (
+            ""
+          ) : (
+            <Link href="/signup">
+              <Button
+                size={{ initial: "md", md: "lg" }}
+                color={main ? "light" : "primary"}
+              >
+                Sign up
+              </Button>
+            </Link>
+          )}{" "}
         </div>
       </div>
     </nav>

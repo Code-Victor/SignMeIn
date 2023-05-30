@@ -1,4 +1,4 @@
-import { Footer, Navbar } from "../components";
+import { Footer, Navbar, SignupForm } from "../components";
 import Image from "next/image";
 1;
 export default function Home() {
@@ -21,6 +21,13 @@ export default function Home() {
             width={129}
             height={280}
           />
+          <div className="max-w-lg mx-auto w-full">
+            <h1 className="text-3xl font-bold text-center">
+              Create your account
+            </h1>
+            <p className="text-center text-gray-500 mt-2">Let’s get you started with you started</p>
+            <SignupForm/>
+          </div>
         </div>
       </main>
       <Footer />

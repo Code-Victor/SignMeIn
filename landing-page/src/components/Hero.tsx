@@ -35,7 +35,7 @@ const Hero = () => {
           record and organize data in real-time, saving you time and effort.
         </p>
         <div className="mt-8 flex gap-4 justify-center">
-          <Link href="/dashboard" >
+          <Link href="/signup" >
             <Button color="light" size={{ initial: "md", md: "lg" }}>
               For organisation
             </Button>
