@@ -6,3 +6,4 @@ export { default as Why } from "./Why";
 export { default as About } from "./About";
 export { default as Features } from "./Features";
 export { default as SignupForm } from "./SignupForm";
+export { default as Input } from "./Input";
