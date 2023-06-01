@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, request
 from django.contrib.auth.models import update_last_login
 from rest_framework.authentication import authenticate
 from rest_framework.validators import ValidationError
@@ -6,6 +6,7 @@ from .models import CustomUser, Organizations, Workers
 import string
 import random
 from rest_framework_simplejwt.tokens import RefreshToken
+
 
 #Generate random password for workers
 def generate_random_password():
@@ -19,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'email', 'username',  'is_organization', 'is_worker'
+            'email', 'is_organization'
         ]
 
 
@@ -99,67 +100,46 @@ class OrganizationCustomLoginSerializer(serializers.ModelSerializer):
             except:
                 raise serializers.ValidationError("Invalid login credentials")
     
-    
-class AddWorkerSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(max_length=50)
-    last_name = serializers.CharField(max_length=50)
-    gender = serializers.CharField(max_length=20)
-    age = serializers.IntegerField()
-    house_address = serializers.CharField(max_length= 30000)
-    class Meta:
-        model = CustomUser
-        fields = [
-            'first_name', 'last_name', 'email', 
-            'gender', 'age', 'house_address'
-        ]
-        extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-            'gender': {'required': True},
-            'age': {'required': True},
-            'house_address': {'required': True}
-        }
-        
-        
-    def save(self, **kwargs):
-        user = CustomUser(
-            email = self.validated_data['email']
-        )
-        password = generate_random_password()
-        user.set_password(password)
-        user.is_worker = True
-        user.save()
-        Workers.objects.create(
-            user = user,
-            first_name = self.validated_data['first_name'],
-            last_name = self.validated_data['last_name'],
-            gender = self.validated_data['gender'],
-            age = self.validated_data['age'],
-            house_address = self.validated_data['house_address']
-        )
-        return user
-    
-# 3# class OrganizationLoginSerializer(serializers.ModelSerializer):
+# Organizations only have the permission to add workers 
+#Worker's password is generated randomly and is automatically sent to the worker's email address   
+# class AddWorkerSerializer(serializers.ModelSerializer):
+#     first_name = serializers.CharField(max_length=50)
+#     last_name = serializers.CharField(max_length=50)
+#     gender = serializers.CharField(max_length=20)
+#     age = serializers.IntegerField()
+#     house_address = serializers.CharField(max_length= 30000)
 #     class Meta:
-#         model = Organizations
-#         fields = ['email', 'password']
+#         model = CustomUser
+#         fields = [
+#             'first_name', 'last_name', 'email', 
+#             'gender', 'age', 'house_address'
+#         ]
 #         extra_kwargs = {
-#             'email':{'required': True},
-#             'password': {'required': True}
+#             'first_name': {'required': True},
+#             'last_name': {'required': True},
+#             'gender': {'required': True},
+#             'age': {'required': True},
+#             'house_address': {'required': True}
 #         }
         
-# class WorkerSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Workers
-#         fields = ['id', 'Organization','first_name', 
-#                   'last_name','email_address',
-#                   'gender', 'age', 'house_address', 'password']
-#         extra_kwargs = {'Organization': {'required': True},
-#                         'first_name':{'required': True},
-#                         'last_name':{'required': True},
-#                         'email_address': {'required': True},
-#                         'gender': {'required': True},
-#                         'age':{'required': True},
-#                         'house_address': {'required': True},
-#                         'password': {'required': True}
-#                         }
+        
+#     def save(self, **kwargs):
+#         current_organization= self.context
+#         user = CustomUser(
+#             email = self.validated_data['email']
+#         )
+#         password = generate_random_password()
+#         user.set_password(password)
+#         user.is_worker = True
+#         Workers.objects.create(
+#             user = user,
+#             organization = current_organization,
+#             first_name = self.validated_data['first_name'],
+#             last_name = self.validated_data['last_name'],
+#             gender = self.validated_data['gender'],
+#             age = self.validated_data['age'],
+#             house_address = self.validated_data['house_address']
+#         )
+#         user.save()
+#         return user
+    

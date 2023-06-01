@@ -59,4 +59,4 @@ class Workers(models.Model):
     house_address = models.TextField()
     
     def __str__(self):
-        return self.user.emai;
+        return self.user.email
