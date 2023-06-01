@@ -1,8 +1,7 @@
 import React, { useId } from "react";
 import { useForm } from "react-hook-form";
 import type { FieldValues, FieldErrors } from "react-hook-form";
-import Button from "./base/Button";
-import Input from "./base/Input";
+import { Button, Input } from "../base";
 
 interface SignupInput {
   name: String;

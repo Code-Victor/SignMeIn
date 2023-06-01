@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import Button from "./base/Button";
-import mockup from "../../public/img/Mockup.svg";
+import { Button } from "../base";
+import mockup from "@public/img/Mockup.svg";
 
 const features = [
   {

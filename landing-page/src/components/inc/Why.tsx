@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
-import Button from "./base/Button";
-import pana from "../../public/img/pana.svg";
+import { Button } from "../base";
+import pana from "@public/img/pana.svg";
 
 type ReasonProps = {
   heading: string;

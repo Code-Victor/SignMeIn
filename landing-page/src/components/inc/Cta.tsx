@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import Button from "./base/Button";
+import { Button } from "../base";
 
 function Cta() {
   return (

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import Button from "../base/Button";
-import dasboardImage from "../../public/img/Dashboard 1.png";
+import { Button } from "../base";
+import dasboardImage from "@public/img/Dashboard 1.png";
 
 function About() {
   return (

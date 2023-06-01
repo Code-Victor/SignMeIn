@@ -1,7 +1,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import React from "react";
-import Button from "./base/Button";
+import { Button } from "../base";
 
 const Navbar = ({ main = false }: { main?: boolean }) => {
   const pathname = usePathname();

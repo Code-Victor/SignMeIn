@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Button from "./base/Button";
+import { Button } from "../base";
 import Link from "next/link";
 const Hero = () => {
   return (
