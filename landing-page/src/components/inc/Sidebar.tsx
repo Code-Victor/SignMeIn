@@ -12,37 +12,20 @@ import {
   Icon,
 } from "@tremor/react";
 import Image from "next/image";
-import { BriefcaseIcon, ChartIcon, ClockIcon, HomeIcon } from "../icons";
+import Link from "next/link";
 
-const links = [
-  {
-    name: "Overview",
-    href: "#",
-    icon: HomeIcon,
-  },
-  {
-    name: "Workers",
-    href: "#",
-    icon: BriefcaseIcon,
-  },
-  {
-    name: "History",
-    href: "#",
-    icon: ClockIcon,
-  },
-  {
-    name: "Leaderboard",
-    href: "#",
-    icon: ChartIcon,
-  },
-];
+interface SidebarLinks {
+  name: string;
+  href: string;
+  icon: () => JSX.Element;
+}
 
-const Sidebar = () => {
+const Sidebar = ({ links }: { links: SidebarLinks[] }) => {
   const [open, setOpen] = React.useState(false);
   return (
     <div
       className={
-        "h-screen shadow-md relative duration-300  flex flex-col gap-12 " +
+        "h-screen sticky top-0 shadow-md duration-300  flex flex-col gap-12 " +
         (open ? "w-56" : "w-20")
       }
     >
@@ -84,7 +67,8 @@ const Sidebar = () => {
         {links.map((link, index) => {
           const Icon = link.icon;
           return (
-            <div
+            <Link
+              href={link.href}
               key={index}
               className={
                 "flex items-center gap-2 py-4 pl-2 border-l-4 " +
@@ -100,7 +84,7 @@ const Sidebar = () => {
               {open && (
                 <span className="font-medium text-medium">{link.name}</span>
               )}
-            </div>
+            </Link>
           );
         })}
       </div>

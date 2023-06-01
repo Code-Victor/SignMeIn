@@ -16,14 +16,40 @@ import ChartCard from "@/components/inc/Chart";
 import QrCard from "@/components/inc/QrCard";
 import EmployeeTable from "@/components/inc/EmployeeTable";
 import { Sidebar } from "@/components/inc";
-import { BriefcaseIcon } from "@/components/icons";
+import {
+  BriefcaseIcon,
+  ChartIcon,
+  ClockIcon,
+  HomeIcon,
+} from "@/components/icons";
 
-const links = ["Overview", "Workers Info", "Time history", "Leaderboard"];
+const links = [
+  {
+    name: "Overview",
+    href: "/",
+    icon: HomeIcon,
+  },
+  {
+    name: "Workers",
+    href: "/workers",
+    icon: BriefcaseIcon,
+  },
+  {
+    name: "History",
+    href: "#",
+    icon: ClockIcon,
+  },
+  {
+    name: "Leaderboard",
+    href: "#",
+    icon: ChartIcon,
+  },
+];
 
 function Dashboard() {
   return (
     <div className="flex">
-      <Sidebar />
+      <Sidebar links={links} />
       <div className="flex-1 px-4 pt-4">
         <nav className="flex justify-between items-center h-16 pr-4 shadow-md">
           <div />
