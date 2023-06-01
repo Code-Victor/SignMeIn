@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
-import Button from "./Button";
+import Button from "./base/Button";
 import pana from "../../public/img/pana.svg";
 
 type ReasonProps = {

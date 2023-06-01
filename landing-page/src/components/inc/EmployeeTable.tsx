@@ -11,7 +11,7 @@ import {
   Badge,
   Flex,
 } from "@tremor/react";
-import Button from "./Button";
+import Button from "./base/Button";
 
 const Clock = () => {
   return (

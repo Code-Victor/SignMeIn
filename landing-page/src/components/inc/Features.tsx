@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import Button from "./Button";
+import Button from "./base/Button";
 import mockup from "../../public/img/Mockup.svg";
 
 const features = [

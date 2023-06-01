@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Button from "./Button";
+import Button from "./base/Button";
 import Link from "next/link";
 const Hero = () => {
   return (
@@ -35,7 +35,7 @@ const Hero = () => {
           record and organize data in real-time, saving you time and effort.
         </p>
         <div className="mt-8 flex gap-4 justify-center">
-          <Link href="/signup" >
+          <Link href="/signup">
             <Button color="light" size={{ initial: "md", md: "lg" }}>
               For organisation
             </Button>
