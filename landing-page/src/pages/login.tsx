@@ -1,8 +1,6 @@
-import { Footer, Navbar } from "../components";
-import { Inter } from "next/font/google";
+import { Footer, Navbar } from "@/components/inc";
 import Image from "next/image";
 
-const inter = Inter({ subsets: ["latin"] });
 
 export default function SignIn() {
   return (

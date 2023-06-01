@@ -1,8 +1,8 @@
-import { Footer, Navbar, SignupForm } from "../components";
+import { Footer, Navbar, SignupForm } from "@/components/inc";
 import Image from "next/image";
 1;
 export default function Home() {
-  return (
+  return ( 
     <>
       <Navbar />
       <main>
