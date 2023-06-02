@@ -12,6 +12,7 @@ module.exports = withTV({
     extend: {
       colors: {
         primary: "#663ed6",
+        secondary: "#F3F7FA",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
