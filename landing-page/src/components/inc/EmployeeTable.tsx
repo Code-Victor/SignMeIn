@@ -88,13 +88,15 @@ const data = [
 
 const EmployeeTable = ({ full = false }: { full?: boolean }) => (
   <Card>
-    <Flex justifyContent="between" alignItems="center">
-      <Title>Time Records</Title>
-      <Link href="/app/organizations/history">
-        <Button>view all</Button>
-      </Link>
-    </Flex>
-    <Table className="mt-5">
+    {!full && (
+      <Flex justifyContent="between" alignItems="center" className="mb-5">
+        <Title>Time Records</Title>
+        <Link href="/app/organizations/history">
+          <Button>view all</Button>
+        </Link>
+      </Flex>
+    )}
+    <Table>
       <TableHead>
         <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
