@@ -45,7 +45,7 @@ function Dashboard() {
   return (
     <div className="flex">
       <Sidebar links={links} />
-      <div className="flex-1 px-4 pt-4">
+      <div className="flex-1 px-4 pt-4 bg-secondary">
         {/* <nav className="flex justify-between items-center h-16 pr-4 shadow-md">
           <div />
           <div className="flex gap-2 items-center">
@@ -57,7 +57,7 @@ function Dashboard() {
           <Text>Welcome</Text>
           <Title>Kibo School Organisation</Title>
         </div> */}
-        <div className="my-4 py-10 px-10">
+        <div className="my-4 py-10 px-10 bg-white rounded-xl">
           <div className="flex gap-3">
             <Image src="/img/avatar.png" alt="avatar" width={60} height={60} />
             <div>
@@ -96,6 +96,7 @@ function Dashboard() {
             
           </div>
         </div>
+        {/* ---------- */}
         <div>
           <Title className="text-primary">Dashboard</Title>
           <Grid numCols={5} className="gap-6">
