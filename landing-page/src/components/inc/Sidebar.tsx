@@ -1,18 +1,7 @@
-import React from "react";
-import {
-  Card,
-  Metric,
-  Text,
-  Flex,
-  BadgeDelta,
-  DeltaType,
-  Grid,
-  Title,
-  Col,
-  Icon,
-} from "@tremor/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
 
 interface SidebarLinks {
   name: string;
@@ -22,6 +11,8 @@ interface SidebarLinks {
 
 const Sidebar = ({ links }: { links: SidebarLinks[] }) => {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const path = router.pathname;
   return (
     <div
       className={
@@ -72,7 +63,7 @@ const Sidebar = ({ links }: { links: SidebarLinks[] }) => {
               key={index}
               className={
                 "flex items-center gap-2 py-4 pl-2 border-l-4 " +
-                (index === 0
+                (link.href === path
                   ? "bg-primary/30  border-primary "
                   : "border-transparent ") +
                 (open ? "justify-start gap-2" : "justify-center ")
