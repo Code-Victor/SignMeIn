@@ -12,6 +12,7 @@ import {
   Flex,
 } from "@tremor/react";
 import { Button } from "../base";
+import Link from "next/link";
 
 const Clock = () => {
   return (
@@ -85,11 +86,13 @@ const data = [
   },
 ];
 
-const EmployeeTable = () => (
+const EmployeeTable = ({ full = false }: { full?: boolean }) => (
   <Card>
     <Flex justifyContent="between" alignItems="center">
       <Title>Time Records</Title>
-      <Button>view all</Button>
+      <Link href="/app/organizations/history">
+        <Button>view all</Button>
+      </Link>
     </Flex>
     <Table className="mt-5">
       <TableHead>
@@ -102,7 +105,7 @@ const EmployeeTable = () => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((item) => {
+        {data.slice(0, full ? data.length : 5).map((item) => {
           const timeIn = item.timeIn.replace("AM", "").split(":");
           const timeInHour = parseInt(timeIn[0]);
           const timeInMin = parseInt(timeIn[1]);
