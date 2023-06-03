@@ -68,7 +68,7 @@ function Dashboard() {
           <div className="flex justify-between pt-10">
             <div className="flex gap-4 bg-secondary rounded-xl py-10 px-12">
               <div className="bg-primary p-1 rounded-full">
-                <Icon icon={BriefcaseIcon} size="xl" color="white" />
+                <Icon icon={BriefcaseIcon} size="xl" />
               </div>
               <div>
                 <p className="text-primary font-bold">Total Attendance</p>
@@ -77,7 +77,7 @@ function Dashboard() {
             </div>
             <div className="flex gap-4 bg-secondary rounded-xl py-10 px-12">
               <div className="bg-primary p-1 rounded-full">
-                <Icon icon={BriefcaseIcon} size="xl" color="white" />
+                <Icon icon={BriefcaseIcon} size="xl" />
               </div>
               <div>
                 <p className="text-primary font-bold">Avg. Check In Time</p>
@@ -86,18 +86,15 @@ function Dashboard() {
             </div>
             <div className="flex gap-4 bg-secondary rounded-xl py-10 px-12">
               <div className="bg-primary p-1 rounded-full">
-                <Icon icon={BriefcaseIcon} size="xl" color="white" />
+                <Icon icon={BriefcaseIcon} size="xl" />
               </div>
               <div>
                 <p className="text-primary font-bold">Avg. Check Out Time</p>
                 <p className=" text-2xl font-bold">309</p>
               </div>
             </div>
-            
           </div>
-          <div>
-            
-          </div>
+          <div></div>
         </div>
         {/* ---------- */}
         <div>
