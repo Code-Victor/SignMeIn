@@ -6,11 +6,13 @@ module.exports = withTV({
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}", // tremor module
   ],
   theme: {
     extend: {
       colors: {
         primary: "#663ed6",
+        secondary: "#F3F7FA",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
