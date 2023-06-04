@@ -9,11 +9,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 #Generate random password for workers
-def generate_random_password():
-    # get random password of length 8 with letters, digits, and symbols
-    characters = string.ascii_letters + string.digits + string.punctuation
-    password = ''.join(random.choice(characters) for i in range(12))
-    return password
+# def generate_random_password():
+#     # get random password of length 8 with letters, digits, and symbols
+#     characters = string.ascii_letters + string.digits + string.punctuation
+#     password = ''.join(random.choice(characters) for i in range(12))
+#     return password
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -65,7 +65,7 @@ class OrganizationRegisterSerializer(serializers.ModelSerializer):
         )
         return user
   
-class OrganizationCustomLoginSerializer(serializers.ModelSerializer):
+class CustomLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField(max_length=128, write_only=True)
     access = serializers.CharField(read_only=True)
@@ -77,69 +77,85 @@ class OrganizationCustomLoginSerializer(serializers.ModelSerializer):
     def validate(self, data):
         email = data['email']
         password = data['password']
-        if CustomUser.organization.filter(email=email):
-            user = authenticate(email=email, password=password)
-        
-            if user is None:
-                raise serializers.ValidationError("Invalid login credentials")
-
-            try:
-                refresh = RefreshToken.for_user(user)
-                refresh_token = str(refresh)
-                access_token = str(refresh.access_token)
-
-                update_last_login(None, user)
-
-                validation = {
-                    'access': access_token,
-                    'refresh': refresh_token,
-                    'email': user.email,
-                }
-
-                return validation
-            except:
-                raise serializers.ValidationError("Invalid login credentials")
+        user = authenticate(email=email, password=password)
     
-# Organizations only have the permission to add workers 
-#Worker's password is generated randomly and is automatically sent to the worker's email address   
-# class AddWorkerSerializer(serializers.ModelSerializer):
-#     first_name = serializers.CharField(max_length=50)
-#     last_name = serializers.CharField(max_length=50)
-#     gender = serializers.CharField(max_length=20)
-#     age = serializers.IntegerField()
-#     house_address = serializers.CharField(max_length= 30000)
-#     class Meta:
-#         model = CustomUser
-#         fields = [
-#             'first_name', 'last_name', 'email', 
-#             'gender', 'age', 'house_address'
-#         ]
-#         extra_kwargs = {
-#             'first_name': {'required': True},
-#             'last_name': {'required': True},
-#             'gender': {'required': True},
-#             'age': {'required': True},
-#             'house_address': {'required': True}
-#         }
+        if user is None:
+            raise serializers.ValidationError("Invalid login credentials")
+
+        try:
+            refresh = RefreshToken.for_user(user)
+            refresh_token = str(refresh)
+            access_token = str(refresh.access_token)
+
+            update_last_login(None, user)
+
+            validation = {
+                'access': access_token,
+                'refresh': refresh_token,
+                'email': user.email,
+            }
+
+            return validation
+        except:
+            raise serializers.ValidationError("Invalid login credentials")
+    
+ 
+class AddWorkerSerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(style={"input_type": "password"}, write_only=True)
+    first_name = serializers.CharField(max_length=50)
+    last_name = serializers.CharField(max_length=50)
+    gender = serializers.CharField(max_length=20)
+    age = serializers.IntegerField()
+    house_address = serializers.CharField(max_length= 30000)
+    password = serializers.CharField(max_length=50)
+   
         
+    class Meta:
+        model = CustomUser
+        fields = [
+            'first_name', 'last_name', 'email',
+            'gender', 'age', 'house_address', 'password',  'confirm_password'
+        ]
         
-#     def save(self, **kwargs):
-#         current_organization= self.context
-#         user = CustomUser(
-#             email = self.validated_data['email']
-#         )
-#         password = generate_random_password()
-#         user.set_password(password)
-#         user.is_worker = True
-#         Workers.objects.create(
-#             user = user,
-#             organization = current_organization,
-#             first_name = self.validated_data['first_name'],
-#             last_name = self.validated_data['last_name'],
-#             gender = self.validated_data['gender'],
-#             age = self.validated_data['age'],
-#             house_address = self.validated_data['house_address']
-#         )
-#         user.save()
-#         return user
+        extra_kwargs = {
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'gender': {'required': True},
+            'age': {'required': True},
+            'house_address': {'required': True},
+            'password': {'required': True}
+        }
+       
+    def get_current_organization(self):
+        current_organization = self.context['request'].user
+        get_current_organization_id = list(CustomUser.organization.filter(email=current_organization).values('id'))
+        organization_user_id = get_current_organization_id[0]['id']
+        organization= Organizations.objects.get(user_id=organization_user_id)
+        return organization
+        
+    def save(self, **kwargs):
+        user = CustomUser(
+            email = self.validated_data['email'],
+        )
+        password = self.validated_data['password']
+        confirm_password = self.validated_data['confirm_password']
+        if password != confirm_password:
+            raise ValidationError({"error": "Password do not match"})
+        
+        user.set_password(password)
+        user.is_worker = True
+        user.is_organization = False
+        user.save()
+       
+        worker = Workers(
+                user = user,
+                organization = self.get_current_organization(),
+                first_name = self.validated_data['first_name'],
+                last_name = self.validated_data['last_name'],
+                gender = self.validated_data['gender'],
+                age = self.validated_data['age'],
+                house_address = self.validated_data['house_address']
+            )
+        worker.save()
+        return user
     
