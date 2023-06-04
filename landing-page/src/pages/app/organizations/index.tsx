@@ -1,28 +1,20 @@
-import React, { ReactElement } from "react";
-import {
-  Card,
-  Metric,
-  Text,
-  Flex,
-  BadgeDelta,
-  DeltaType,
-  Grid,
-  Title,
-  Col,
-  Icon,
-} from "@tremor/react";
-import Image from "next/image";
-import ChartCard from "@/components/inc/Chart";
-import QrCard from "@/components/inc/QrCard";
-import EmployeeTable from "@/components/inc/EmployeeTable";
-import { Sidebar } from "@/components/inc";
 import {
   BriefcaseIcon,
   ChartIcon,
   ClockIcon,
-  HomeIcon,
+  HomeIcon
 } from "@/components/icons";
+import { Sidebar } from "@/components/inc";
+import ChartCard from "@/components/inc/Chart";
+import EmployeeTable from "@/components/inc/EmployeeTable";
+import QrCard from "@/components/inc/QrCard";
 import type { NextPageWithLayout } from "@/pages/_app";
+import {
+  Card, Col, Grid, Icon, Metric,
+  Text, Title
+} from "@tremor/react";
+import Image from "next/image";
+import React, { ReactElement } from "react";
 
 const links = [
   {

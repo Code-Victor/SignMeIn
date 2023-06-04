@@ -60,7 +60,9 @@ function Leaderboard() {
           <TableRow className="text-center">
             <TableHeaderCell>Position</TableHeaderCell>
             <TableHeaderCell>Name</TableHeaderCell>
-            <TableHeaderCell>Role</TableHeaderCell>
+            <TableHeaderCell className="hidden md:table-cell">
+              Role
+            </TableHeaderCell>
             <TableHeaderCell>Email</TableHeaderCell>
           </TableRow>
         </TableHead>
@@ -74,9 +76,12 @@ function Leaderboard() {
                   {lead ? <Medal fill={medal[index]} /> : index + 1}
                 </TableCell>
                 <TableCell>
-                  <Text>{item.name}</Text>
+                  <div className="flex flex-col gap-1 ">
+                    <Text>{item.name}</Text>
+                    <Text className="md:hidden text-sm">{item.Role}</Text>
+                  </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden md:table-cell">
                   <Text>{item.Role}</Text>
                 </TableCell>
                 <TableCell>

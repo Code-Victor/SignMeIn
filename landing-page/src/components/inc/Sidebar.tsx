@@ -16,7 +16,7 @@ const Sidebar = ({ links }: { links: SidebarLinks[] }) => {
   return (
     <div
       className={
-        "h-screen sticky top-0 shadow-md duration-300  flex flex-col gap-12 " +
+        "hidden h-screen sticky top-0 shadow-md duration-300  md:flex flex-col gap-12 " +
         (open ? "w-56" : "w-16")
       }
     >

@@ -96,7 +96,34 @@ const EmployeeTable = ({ full = false }: { full?: boolean }) => (
         </Link>
       </Flex>
     )}
-    <Table>
+    <div className="flex flex-col gap-2 md:hidden">
+      {data.slice(0, full ? data.length : 5).map((item) => {
+        const timeIn = item.timeIn.replace("AM", "").split(":");
+        const timeInHour = parseInt(timeIn[0]);
+        const timeInMin = parseInt(timeIn[1]);
+        const timeInTime = timeInHour * 60 + timeInMin;
+        const isLate = timeInTime > 480;
+        return (
+          <Card key={item.name} className="flex flex-col gap">
+            <div className="flex justify-between">
+              <p>Monday, 29 2023.</p>
+              <Badge color={isLate ? "red" : "green"} icon={Clock}>
+                {isLate ? "late" : "on time"}
+              </Badge>
+            </div>
+            <div className="flex justify-between">
+              <p className="text-primary">Check in time</p>
+              <p className="text-primary">Check out time</p>
+            </div>
+            <div className="flex justify-between">
+              <p>{item.timeIn}</p>
+              <p>{item.timeOut}</p>
+            </div>
+          </Card>
+        );
+      })}
+    </div>
+    <Table className="hidden md:table">
       <TableHead>
         <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
