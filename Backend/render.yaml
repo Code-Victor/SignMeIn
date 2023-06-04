@@ -1,0 +1,20 @@
+databases:
+  - name: signmein
+    databaseName: signmein
+    user: signmein
+
+services:
+  - type: web
+    name: signmein
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn signmein.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: signmein
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
