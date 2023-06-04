@@ -77,6 +77,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
     
+    objects = CustomUserManager()
     organization = OrganizationManager()
     workers = WorkersManager()
     

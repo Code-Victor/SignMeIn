@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'email', 'is_organization'
+            'id', 'email', 'is_organization', 'is_worker'
         ]
 
 
@@ -55,6 +55,7 @@ class OrganizationRegisterSerializer(serializers.ModelSerializer):
             raise ValidationError({"error": "Password do not match"})
         user.set_password(password)
         user.is_organization = True
+        user.is_worker = False
         user.save()
         Organizations.objects.create(
             user = user,
