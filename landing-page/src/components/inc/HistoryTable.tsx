@@ -35,14 +35,14 @@ const Clock = () => {
 
 const data = [
   {
-    name: "Viola Amherd",
+    day: "Monday, 29 2023.",
     Role: "Federal Councillor",
     timeIn: "8:00AM",
     timeOut: "5:04PM",
     status: "active",
   },
   {
-    name: "Simonetta Sommaruga",
+    day: "Monday, 29 2023.",
     Role: "Federal Councillor",
 
     timeIn: "7:54AM",
@@ -50,35 +50,35 @@ const data = [
     status: "active",
   },
   {
-    name: "Alain Berset",
+    day: "Monday, 29 2023.",
     Role: "Federal Councillor",
     timeIn: "8:05AM",
     timeOut: "5:10PM",
     status: "active",
   },
   {
-    name: "Ignazio Cassis",
+    day: "Monday, 29 2023.",
     Role: "Federal Councillor",
     timeIn: "8:00AM",
     timeOut: "5:28PM",
     status: "active",
   },
   {
-    name: "Ueli Maurer",
+    day: "Monday, 29 2023.",
     Role: "Federal Councillor",
     timeIn: "9:00AM",
     timeOut: "4:04PM",
     status: "active",
   },
   {
-    name: "Guy Parmelin",
+    day: "Monday, 29 2023.",
     Role: "Federal Councillor",
     timeIn: "8:00AM",
     timeOut: "5:04PM",
     status: "active",
   },
   {
-    name: "Karin Keller-Sutter",
+    day: "Monday, 29 2023.",
     Role: "Federal Councillor",
     timeIn: "8:00AM",
     timeOut: "5:04PM",
@@ -86,27 +86,27 @@ const data = [
   },
 ];
 
-const EmployeeTable = ({ full = false }: { full?: boolean }) => (
+const HistoryTable = ({ full = false }: { full?: boolean }) => (
   <Card>
     {!full && (
       <Flex justifyContent="between" alignItems="center" className="mb-5">
         <Title>Time Records</Title>
-        <Link href="/app/organizations/history">
+        <Link href="/app/workers/history">
           <Button>view all</Button>
         </Link>
       </Flex>
     )}
     <div className="flex flex-col gap-2 md:hidden">
-      {data.slice(0, full ? data.length : 5).map((item) => {
+      {data.slice(0, full ? data.length : 5).map((item, i) => {
         const timeIn = item.timeIn.replace("AM", "").split(":");
         const timeInHour = parseInt(timeIn[0]);
         const timeInMin = parseInt(timeIn[1]);
         const timeInTime = timeInHour * 60 + timeInMin;
         const isLate = timeInTime > 480;
         return (
-          <Card key={item.name} className="flex flex-col gap">
+          <Card key={i} className="flex flex-col gap">
             <div className="flex justify-between">
-              <p>{item.name}</p>
+              <p>{item.day}</p>
               <Badge color={isLate ? "red" : "green"} icon={Clock}>
                 {isLate ? "late" : "on time"}
               </Badge>
@@ -123,10 +123,10 @@ const EmployeeTable = ({ full = false }: { full?: boolean }) => (
         );
       })}
     </div>
-    <Table>
+    <Table className="hidden md:block">
       <TableHead>
         <TableRow>
-          <TableHeaderCell>Name</TableHeaderCell>
+          <TableHeaderCell>Date</TableHeaderCell>
           <TableHeaderCell>Role</TableHeaderCell>
           <TableHeaderCell>Time In</TableHeaderCell>
           <TableHeaderCell>Time Out</TableHeaderCell>
@@ -134,15 +134,15 @@ const EmployeeTable = ({ full = false }: { full?: boolean }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.slice(0, full ? data.length : 5).map((item) => {
+        {data.slice(0, full ? data.length : 5).map((item, i) => {
           const timeIn = item.timeIn.replace("AM", "").split(":");
           const timeInHour = parseInt(timeIn[0]);
           const timeInMin = parseInt(timeIn[1]);
           const timeInTime = timeInHour * 60 + timeInMin;
           const isLate = timeInTime > 480;
           return (
-            <TableRow key={item.name}>
-              <TableCell>{item.name}</TableCell>
+            <TableRow key={i}>
+              <TableCell>{item.day}</TableCell>
               <TableCell>
                 <Text>{item.Role}</Text>
               </TableCell>
@@ -164,4 +164,4 @@ const EmployeeTable = ({ full = false }: { full?: boolean }) => (
     </Table>
   </Card>
 );
-export default EmployeeTable;
+export default HistoryTable;

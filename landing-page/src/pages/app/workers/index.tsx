@@ -9,6 +9,7 @@ import { Sidebar } from "@/components/inc";
 import Bottombar from "@/components/inc/Bottombar";
 import Carousel from "@/components/inc/Carousel";
 import EmployeeTable from "@/components/inc/EmployeeTable";
+import HistoryTable from "@/components/inc/HistoryTable";
 import { NextPageWithLayout } from "@/pages/_app";
 import { Col, Grid, Icon, Text, Title } from "@tremor/react";
 import Image from "next/image";
@@ -73,7 +74,7 @@ const Dashboard: NextPageWithLayout = () => {
           Clock out
         </Button>
       </div>
-      <EmployeeTable />
+      <HistoryTable />
     </>
   );
 };
