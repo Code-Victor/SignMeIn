@@ -1,8 +1,8 @@
-python 
-django 
-dj-database-url
-psycopg2-binary
-whitenoise 
-gunicorn 
-django-rest-framework 
-rest-framework-simplejwt
+django == 4.2.1
+dj-database-url == 2.0.0
+psycopg2-binary == 2.9.6
+whitenoise[brotli] == 6.4.0
+gunicorn == 20.1.0
+django-rest-framework == 0.1.0
+rest-framework-simplejwt == 0.0.2
+poetry == 1.5.1
