@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import dj_database_url
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,18 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
+env = environ.Env()
+environ.Env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-hi09o6yto+^a!e479)+nikmd26!esiv$94v!1o!ay8^t2(%s&6')
+SECRET_KEY = 'django-insecure-hi09o6yto+^a!e479)+nikmd26!esiv$94v!1o!ay8^t2(%s&6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+DEBUG = False #'RENDER' not in os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:   
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+# if RENDER_EXTERNAL_HOSTNAME:   
+#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -91,7 +93,7 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config('postgresql://postgres:postgres@localhost:5432/signmein',  conn_max_age=600000)
+    'default': dj_database_url.parse(env('DATABASE_URL'))
 }
 
 
@@ -154,7 +156,7 @@ REST_AUTH_SERIALIZERS = {
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'https://signmein.vercel.app/'
+    'https://signmein.vercel.app'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
