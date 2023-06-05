@@ -40,6 +40,7 @@ class LoginView(GenericAPIView):
                 'access': serializer.data['access'],
                 'refresh': serializer.data['refresh'],
                 'authenticatedUser': {
+                    'username': serializer.data['username'],
                     'email': serializer.data['email'],    
                 }
             }
@@ -75,3 +76,6 @@ class WorkersDashboardView(RetrieveAPIView):
     
     def get_object(self):
         return self.request.user
+    
+    
+# class ListAllWorkers()

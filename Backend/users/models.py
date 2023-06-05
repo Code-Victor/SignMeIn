@@ -61,7 +61,7 @@ class WorkersManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     email = models.CharField(unique=True)
-    username = None
+    username = models.CharField(max_length=200)
     is_superuser = None
     is_staff = None
     first_name = None

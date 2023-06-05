@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'id', 'email', 'is_organization', 'is_worker'
+            'id', 'email', 'username', 'is_organization', 'is_worker'
         ]
 
 
@@ -46,7 +46,8 @@ class OrganizationRegisterSerializer(serializers.ModelSerializer):
         
     def save(self, **kwargs):
         user = CustomUser(
-            email = self.validated_data['email']
+            email = self.validated_data['email'],
+            username = self.validated_data['name']
         )
         password = self.validated_data['password']
         confirm_password = self.validated_data['confirm_password']
@@ -94,6 +95,7 @@ class CustomLoginSerializer(serializers.ModelSerializer):
                 'access': access_token,
                 'refresh': refresh_token,
                 'email': user.email,
+                'username': user.username,
             }
 
             return validation
@@ -137,6 +139,7 @@ class AddWorkerSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         user = CustomUser(
             email = self.validated_data['email'],
+            username = self.validated_data['first_name'] + self.validated_data['last_name']
         )
         password = self.validated_data['password']
         confirm_password = self.validated_data['confirm_password']
