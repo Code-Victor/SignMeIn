@@ -1,13 +1,23 @@
-from django.shortcuts import render
 from rest_framework import status, permissions
-from rest_framework.generics import GenericAPIView, RetrieveAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import (UserSerializer, OrganizationRegisterSerializer, 
-                          AddWorkerSerializer, CustomLoginSerializer
+                          AddWorkerSerializer, CustomLoginSerializer, AttendanceSerializer,
+                          OrganizationSerializer, QrcodeSerializer
                           )
 from .permissions import IsOrganization, IsWorker
+from .models import CustomUser, Attendance, Organizations, Workers, Qrcode
+import string
+import random
 
 # Create your views here.
+def generate_random_uuid():
+    # get random password of length 50
+    characters = string.digits
+    uuid = ''.join(random.choice(characters) for i in range(50))
+    return int(uuid)
+
 
 #Organization Registration View
 class OrganizationRegisterView(GenericAPIView):
@@ -31,6 +41,7 @@ class LoginView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         valid = serializer.is_valid(raise_exception=True)
         if valid:
+            username = list(CustomUser.objects.filter(email=serializer.data['email']).values('username'))[0]['username']
             status_code = status.HTTP_200_OK
 
             response = {
@@ -40,7 +51,7 @@ class LoginView(GenericAPIView):
                 'access': serializer.data['access'],
                 'refresh': serializer.data['refresh'],
                 'authenticatedUser': {
-                    'username': serializer.data['username'],
+                    'username': username,
                     'email': serializer.data['email'],    
                 }
             }
@@ -77,5 +88,156 @@ class WorkersDashboardView(RetrieveAPIView):
     def get_object(self):
         return self.request.user
     
+# ClockIn View 
+class ClockInView(APIView):
+    serializer_class = AttendanceSerializer
+    permission_classes = [IsWorker&permissions.IsAuthenticated]
     
-# class ListAllWorkers()
+    def post(self, request):
+        data = {
+            'qrcode_id': request.data.get('qrcode_id'),
+            'worker': request.user.id,
+            'clock_in': request.data.get('clock_in'), 
+            'clock_out': request.data.get('clock_out'),    
+        }
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)      
+    
+# ClockOutView     
+class ClockOutView(APIView):
+    serializer_class = AttendanceSerializer
+    permission_classes = [IsWorker&permissions.IsAuthenticated]
+    
+    
+    def get_object(self, qrcode_id, user_id):
+        '''
+        Helper method to get the object with given todo_id, and user_id
+        '''
+        try:
+            return Attendance.objects.get(qrcode_id=qrcode_id, worker_id = user_id)
+        except Attendance.DoesNotExist:
+            return None
+        
+    
+    def put(self, request, qrcode_id, *args, **kwargs):
+        attendance_instance = self.get_object(qrcode_id, request.user.id)
+        if not attendance_instance:
+            return Response(
+                {"res": "Object with id does not exists"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = { 
+            'clock_out': request.data.get('clock_out'), 
+            'user': request.user.id
+        }
+        serializer = ClockOutView.serializer_class(instance = attendance_instance, data=data, partial = True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
+# Get workers details view
+class WorkersDetailView(APIView):
+    # queryset = Organizations.objects.all()
+    serializer_class = OrganizationSerializer
+    permission_classes = [IsOrganization&permissions.IsAuthenticated]
+    
+    def get_object(self, organization_id, user_id):
+        '''
+        Helper method to get the object with given todo_id, and user_id
+        '''
+        try:
+            return Organizations.objects.get(id=organization_id, user_id = user_id)
+        except Organizations.DoesNotExist:
+            return None
+
+    def get(self, request, organization_id, *args, **kwargs):
+        organization_instance = self.get_object(organization_id, request.user.id)
+        if not organization_instance:
+            return Response(
+                {"res": "Object with id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = WorkersDetailView.serializer_class(organization_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+# Attendance details view
+class AttendanceDetailView(APIView):
+    # queryset = Organizations.objects.all()
+    serializer_class = AttendanceSerializer
+    permission_classes = [IsWorker&permissions.IsAuthenticated]
+        
+    def get(self, request, *args, **kwargs):
+        get_user_attendance = Attendance.objects.filter(worker=request.user.id).values('date', 'clock_in', 'clock_out')
+        user_attendace = {}
+        increment = 1
+        for attendance in get_user_attendance:
+            print(attendance)
+            user_attendace[increment] = attendance
+            increment += 1
+
+        return Response(user_attendace, status=status.HTTP_200_OK)
+
+#Generate QRcode view     
+class GenerateQrcodeView(APIView):
+    serializer_class = QrcodeSerializer
+    permission_classes = [IsOrganization&permissions.IsAuthenticated]
+   
+    def get_object(self, organization_id):
+        try:
+            return Qrcode.objects.get(organization_id = organization_id)
+        except Qrcode.DoesNotExist:
+            return None
+    
+    def put(self, request, organization_id ,*args, **kwargs):
+        qrcode_instance = self.get_object(organization_id)
+        get_current_organization = CustomUser.organization.filter(email=request.user)
+        organization_user_id = list(get_current_organization.values('id'))[0]['id']
+        if get_current_organization:
+            if not qrcode_instance:
+                data = { 
+                    'organization': organization_user_id,
+                    'UUID': generate_random_uuid(),
+                }
+                serializer =  self.serializer_class(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                
+            data = { 
+                'UUID': generate_random_uuid(),
+            }
+            
+            serializer =  GenerateQrcodeView.serializer_class(instance=qrcode_instance, data=data, partial = True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#GetQRcodeUUIDView
+class GetQrcodeIdView(APIView):
+    serializer_class = QrcodeSerializer
+    permission_classes = [IsWorker&permissions.IsAuthenticated]
+    def get(self, request, organization_id):
+        print(organization_id)
+        qrcode_instance = Qrcode.objects.filter(organization=organization_id)
+        qrcode_uuid = list(qrcode_instance.values('UUID'))[0]['UUID']
+        print(qrcode_uuid)
+        if not qrcode_instance:
+            return Response(
+                {"res": "Object with todo id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        return Response(
+            {'UUID': qrcode_uuid},
+            status=status.HTTP_200_OK
+        )
+        
+    

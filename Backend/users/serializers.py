@@ -1,19 +1,10 @@
-from rest_framework import serializers, request
+from rest_framework import serializers
 from django.contrib.auth.models import update_last_login
 from rest_framework.authentication import authenticate
 from rest_framework.validators import ValidationError
-from .models import CustomUser, Organizations, Workers
-import string
-import random
+from .models import CustomUser, Organizations, Workers, Attendance, Qrcode
 from rest_framework_simplejwt.tokens import RefreshToken
-
-
-#Generate random password for workers
-# def generate_random_password():
-#     # get random password of length 8 with letters, digits, and symbols
-#     characters = string.ascii_letters + string.digits + string.punctuation
-#     password = ''.join(random.choice(characters) for i in range(12))
-#     return password
+from datetime import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -80,7 +71,6 @@ class CustomLoginSerializer(serializers.ModelSerializer):
         email = data['email']
         password = data['password']
         user = authenticate(email=email, password=password)
-    
         if user is None:
             raise serializers.ValidationError("Invalid login credentials")
 
@@ -163,3 +153,25 @@ class AddWorkerSerializer(serializers.ModelSerializer):
         worker.save()
         return user
     
+class AttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attendance
+        fields = '__all__'
+        
+ 
+class WorkersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Workers
+        fields = '__all__'
+        
+class OrganizationSerializer(serializers.ModelSerializer):
+    organization_workers = WorkersSerializer(many=True)
+    class Meta:
+        model = Organizations
+        fields = '__all__'
+
+class QrcodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Qrcode
+        fields ='__all__'
+        
