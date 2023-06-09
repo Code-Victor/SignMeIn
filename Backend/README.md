@@ -35,7 +35,7 @@ Make sure you have postgresql installed already if you don't, visit https://www.
     'is_worker' - (returns False)
   }
 
-* 2. organization/signin - This endpoint is used to login the organizations
+* 2. user/signin - This endpoint is used to login the users
 * Method - POST
 * The required fields for this endpoint are
 * a. email - organization email
@@ -84,23 +84,6 @@ Make sure you have postgresql installed already if you don't, visit https://www.
     }
 }
 
-* 5. workers/signin - This endpoint is used to login workers
-* Method - POST
-* The required fields for this endpoint are
-* a. email - organization email
-* b. password - organization password 
-* The response for this endpoint if authentication was successful is 
-> response = {
-                'success': True,
-                'statusCode': status_code,
-                'message': 'User logged in successfully',
-                'access': access token,
-                'refresh': refresh token,
-                'authenticatedUser': {
-                    'username': worker's username(combination of firstname and lastname),
-                    'email': worker's email,
-                }
-            }
   
 * 6. workers/dashboard - this endpoint is used to get current worker and can only be accessed by a registered worker
 * Method - GET
