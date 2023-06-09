@@ -9,10 +9,9 @@ from .views import (OrganizationRegisterView,
 #API endpoints 
 urlpatterns = [
     path('organization/signup', OrganizationRegisterView.as_view()),
-    path('organization/signin', LoginView.as_view()),
+    path('user/signin', LoginView.as_view()),
     path('organization/dashboard', OrganizationDashboardView.as_view()),
     path('add_workers', AddWorkerView.as_view()),
-    path('workers/signin', LoginView.as_view()),
     path('workers/dashboard', WorkersDashboardView.as_view()),
     path('clock_in', ClockInView.as_view()),
     path('organization/<int:organization_id>/list_workers', WorkersDetailView.as_view()),
