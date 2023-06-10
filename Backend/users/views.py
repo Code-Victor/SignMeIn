@@ -55,11 +55,9 @@ class LoginView(GenericAPIView):
                 'message': 'User logged in successfully',
                 'access': serializer.data['access'],
                 'refresh': serializer.data['refresh'],
-                'authenticatedUser': {
-                    'username': username,
-                    'email': serializer.data['email'],
-                    'role' : role   
-                }
+                'username': username,
+                'email': serializer.data['email'],
+                'role' : role   
             }
                 
             return Response(response, status=status_code)
