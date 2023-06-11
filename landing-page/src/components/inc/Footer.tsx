@@ -56,8 +56,9 @@ function Footer() {
       <div className="md:col-span-2 space-y-4">
         <h1 className="text-xl md:text-2xl font-bold text-primary">SignMeIn</h1>
         <p>
-          we help you keep track of your employee promptness with modern
-          technology, save cost and increase workers efficiency
+          Empower your business with modern technology to track employee
+          promptness, save costs, and enhance workers' efficiency - Start
+          optimizing your workforce today!
         </p>
       </div>
       <div className="md:col-span-3 flex flex-wrap justify-between gap-4">

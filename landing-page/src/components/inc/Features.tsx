@@ -4,20 +4,35 @@ import { Button } from "../base";
 import mockup from "@public/img/Mockup.svg";
 
 const features = [
+  // {
+  //   heading: "Clock in and out with QR-code scanning and Fingerprint",
+  //   pargraph:
+  //     "take your attendants by scanning a daily generated admin QR code or finger print scanner",
+  // },
+  // {
+  //   heading: "Clock in and out with QR-code scanning and Fingerprint",
+  //   pargraph:
+  //     "take your attendants by scanning a daily generated admin QR code or finger print scanner",
+  // },
+  // {
+  //   heading: "Clock in and out with QR-code scanning and Fingerprint",
+  //   pargraph:
+  //     "take your attendants by scanning a daily generated admin QR code or finger print scanner",
+  // },
   {
-    heading: "Clock in and out with QR-code scanning and Fingerprint",
-    pargraph:
-      "take your attendants by scanning a daily generated admin QR code or finger print scanner",
+    heading: "Effortless Clock-in and Clock-out",
+    paragraph:
+      "With SignMeIn, attendees can easily clock in and out using our convenient QR code scanning method. Simply scan the daily generated admin QR code for a seamless attendance experience.",
   },
   {
-    heading: "Clock in and out with QR-code scanning and Fingerprint",
-    pargraph:
-      "take your attendants by scanning a daily generated admin QR code or finger print scanner",
+    heading: "Comprehensive Tracking Dashboard",
+    paragraph:
+      "SignMeIn provides organizations with a powerful tracking dashboard to monitor attendance data in real-time. Gain valuable insights into attendance patterns, trends, and overall attendance performance, empowering you to make informed decisions and optimize your operations.",
   },
   {
-    heading: "Clock in and out with QR-code scanning and Fingerprint",
-    pargraph:
-      "take your attendants by scanning a daily generated admin QR code or finger print scanner",
+    heading: "Access to Leaderboard",
+    paragraph:
+      "Engage and motivate your attendees with SignMeIn's leaderboard feature. Recognize and reward individuals or teams with the highest attendance records, fostering a healthy sense of competition and driving attendance excellence.",
   },
 ];
 
@@ -48,7 +63,7 @@ function Features() {
               {features.map((feature, i) => (
                 <div key={i}>
                   <h2 className="font-bold text-lg">{feature.heading}</h2>
-                  <p className="font-thin">{feature.pargraph}</p>
+                  <p className="font-thin">{feature.paragraph}</p>
                 </div>
               ))}
             </div>

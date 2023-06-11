@@ -22,17 +22,23 @@ const Hero = () => {
       <Image
         src="/img/wave.svg"
         alt="wave"
-        className="absolute -z-[2]"
+        className="absolute -z-[2] opacity-40"
         objectFit="cover"
         layout="fill"
       />
       <div className="z-2">
         <h1 className="text-white text-center text-2xl xs:text-4xl md:text-6xl font-bold max-w-[1000px] mx-auto">
-          Effortless Attendance Tracking with QR Codes
+          Effortless Attendance Tracking Made Easy with QR Codes
         </h1>
         <p className="mt-4 text-base md:text-lg text-white text-center max-w-[630px] mx-auto">
-          Effortlessly track attendance with our QR-code software. Quick scans
-          record and organize data in real-time, saving you time and effort.
+          {/* Effortlessly track attendance with our QR-code software. Quick scans
+          record and organize data in real-time, saving you time and effort. */}
+          Say goodbye to manual attendance taking and embrace the convenience of
+          QR codes. Our innovative solution simplifies attendance tracking,
+          saving you time and effort. With just a scan employees can quickly
+          check-in, ensuring accurate and efficient record-keeping. Experience
+          the power of seamless attendance management with our QR code
+          technology.
         </p>
         <div className="mt-8 flex gap-4 justify-center">
           <Link href="/signup">
