@@ -42,6 +42,7 @@ class LoginView(GenericAPIView):
         valid = serializer.is_valid(raise_exception=True)
         if valid:
             username = list(CustomUser.objects.filter(email=serializer.data['email']).values('username'))[0]['username']
+            user_id = list(CustomUser.objects.filter(email=serializer.data['email']).values('id'))[0]['id']
             if list(CustomUser.objects.filter(email=serializer.data['email']).values('is_organization'))[0]['is_organization']:
                 role = 'is_organization'
             else:
@@ -55,6 +56,7 @@ class LoginView(GenericAPIView):
                 'message': 'User logged in successfully',
                 'access': serializer.data['access'],
                 'refresh': serializer.data['refresh'],
+                'id': user_id,
                 'username': username,
                 'email': serializer.data['email'],
                 'role' : role   
