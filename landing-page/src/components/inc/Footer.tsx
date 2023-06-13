@@ -57,7 +57,7 @@ function Footer() {
         <h1 className="text-xl md:text-2xl font-bold text-primary">SignMeIn</h1>
         <p>
           Empower your business with modern technology to track employee
-          promptness, save costs, and enhance workers' efficiency - Start
+          promptness, save costs, and enhance workers efficiency - Start
           optimizing your workforce today!
         </p>
       </div>
