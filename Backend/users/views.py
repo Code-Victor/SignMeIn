@@ -243,5 +243,27 @@ class GetQrcodeIdView(APIView):
             {'UUID': qrcode_uuid},
             status=status.HTTP_200_OK
         )
+      
+# list organization workers attendance history
+class TimeRecordView(APIView):
+    serializer_class= AttendanceSerializer
+    permission_classes = [IsOrganization&permissions.IsAuthenticated]
+    
+    def get_object(self, organization_id):
+        try:
+            return list(Workers.objects.filter(organization = organization_id).values('user_id', 'first_name', 'last_name'))
+        except Workers.DoesNotExist:
+            return None
         
+    def get(self, request):
+        current_user_id = request.user.id
+        organization_id = list(Organizations.objects.filter(user=current_user_id).values('id'))[0]['id']
+        workers_instances = self.get_object(organization_id)
+        workers_attendance = {}
+        for worker_id in workers_instances:
+            # registered_workers.append(worker_id['user_id'])
+            get_workers_attendance = list(Attendance.objects.filter(worker = worker_id['user_id']).values('date', 'clock_in', 'clock_out'))
+            workers_attendance[worker_id['first_name']+worker_id['last_name']] = get_workers_attendance
+
+        return Response(workers_attendance, status=status.HTTP_200_OK)
     
