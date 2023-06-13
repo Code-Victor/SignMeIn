@@ -43,9 +43,11 @@ const Hero = () => {
               For organisation
             </Button>
           </Link>
-          <Button color="light" size={{ initial: "md", md: "lg" }}>
-            For Worker
-          </Button>
+          <Link href="/login">
+            <Button color="light" size={{ initial: "md", md: "lg" }}>
+              For Worker
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
