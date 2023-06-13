@@ -141,3 +141,20 @@ export async function clockOut(data: {
 
   return await response.json();
 }
+export async function getWorkerAttendance(
+  access: string
+): Promise<{ date: string; clock_in: string; clock_out: string }[]> {
+  const response = await fetch(
+    `https://signmein-api.onrender.com/worker/attendance_history`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+    }
+  );
+  if (!response.ok) throw new Error("Failed to complete the request");
+
+  return await response.json();
+}

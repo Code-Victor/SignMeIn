@@ -47,7 +47,7 @@ const Dashboard: NextPageWithLayout = () => {
     <>
       <div>
         <Text>Welcome</Text>
-        <Title>Kibo School Organisation</Title>
+        <Title>{session?.user.username}</Title>
       </div>
       <div>
         <Title className="text-primary">Dashboard</Title>

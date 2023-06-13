@@ -1,5 +1,6 @@
 import { clockIn, clockOut } from "@/api";
 import { Card } from "@tremor/react";
+import { on } from "events";
 import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 import { QrReader } from "react-qr-reader";
@@ -27,12 +28,14 @@ function Scanner({
         qrcode_id: qrcode,
         access: session?.user?.access as string,
       });
+      onChange(false);
     }
     if (type === "clock_out") {
       clockOutMutation.mutate({
         qrcode_id: qrcode,
         access: session?.user?.access as string,
       });
+      onChange(false);
     }
   }, [qrcode]);
   if (!open) return null;

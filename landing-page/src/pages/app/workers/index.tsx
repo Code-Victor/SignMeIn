@@ -17,6 +17,8 @@ import Image from "next/image";
 import React, { ReactElement } from "react";
 import { useRouter } from "next/router";
 import Scanner from "@/components/inc/Scanner";
+import { useQuery } from "react-query";
+import { getWorkerAttendance } from "@/api";
 
 const links = [
   {
@@ -41,6 +43,9 @@ const Dashboard: NextPageWithLayout = () => {
   const name = session?.user.username;
   const [open, setOpen] = React.useState(false);
   const [type, setType] = React.useState<"clock_in" | "clock_out">("clock_in");
+  const { data } = useQuery("UI", () =>
+    getWorkerAttendance(session?.user.access as string)
+  );
   return (
     <>
       <h1 className="text-xl font-medium mb-4">
@@ -96,7 +101,7 @@ const Dashboard: NextPageWithLayout = () => {
         </Button>
         <Scanner open={open} onChange={(open) => setOpen(open)} type={type} />
       </div>
-      <HistoryTable />
+      <HistoryTable data={data} />
     </>
   );
 };

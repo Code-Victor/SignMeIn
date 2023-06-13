@@ -86,7 +86,13 @@ const data = [
   },
 ];
 
-const HistoryTable = ({ full = false }: { full?: boolean }) => (
+const HistoryTable = ({
+  full = false,
+  data,
+}: {
+  full?: boolean;
+  data?: { date: string; clock_in: string; clock_out: string }[];
+}) => (
   <Card>
     {!full && (
       <Flex justifyContent="between" alignItems="center" className="mb-5">
@@ -97,8 +103,8 @@ const HistoryTable = ({ full = false }: { full?: boolean }) => (
       </Flex>
     )}
     <div className="flex flex-col gap-2 md:hidden">
-      {data.slice(0, full ? data.length : 5).map((item, i) => {
-        const timeIn = item.timeIn.replace("AM", "").split(":");
+      {data?.slice(0, full ? data.length : 5).map((item, i) => {
+        const timeIn = item.clock_in.replace("AM", "").split(":");
         const timeInHour = parseInt(timeIn[0]);
         const timeInMin = parseInt(timeIn[1]);
         const timeInTime = timeInHour * 60 + timeInMin;
@@ -106,7 +112,7 @@ const HistoryTable = ({ full = false }: { full?: boolean }) => (
         return (
           <Card key={i} className="flex flex-col gap">
             <div className="flex justify-between">
-              <p>{item.day}</p>
+              <p>{item.date}</p>
               <Badge color={isLate ? "red" : "green"} icon={Clock}>
                 {isLate ? "late" : "on time"}
               </Badge>
@@ -116,8 +122,8 @@ const HistoryTable = ({ full = false }: { full?: boolean }) => (
               <p className="text-primary">Check out time</p>
             </div>
             <div className="flex justify-between">
-              <p>{item.timeIn}</p>
-              <p>{item.timeOut}</p>
+              <p>{item.clock_in}</p>
+              <p>{item.clock_out}</p>
             </div>
           </Card>
         );
@@ -127,30 +133,27 @@ const HistoryTable = ({ full = false }: { full?: boolean }) => (
       <TableHead>
         <TableRow>
           <TableHeaderCell>Date</TableHeaderCell>
-          <TableHeaderCell>Role</TableHeaderCell>
           <TableHeaderCell>Time In</TableHeaderCell>
           <TableHeaderCell>Time Out</TableHeaderCell>
           <TableHeaderCell>Status</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.slice(0, full ? data.length : 5).map((item, i) => {
-          const timeIn = item.timeIn.replace("AM", "").split(":");
+        {data?.slice(0, full ? data.length : 5).map((item, i) => {
+          const timeIn = item.clock_in.replace("AM", "").split(":");
           const timeInHour = parseInt(timeIn[0]);
           const timeInMin = parseInt(timeIn[1]);
           const timeInTime = timeInHour * 60 + timeInMin;
           const isLate = timeInTime > 480;
           return (
             <TableRow key={i}>
-              <TableCell>{item.day}</TableCell>
+              <TableCell>{item.date}</TableCell>
+
               <TableCell>
-                <Text>{item.Role}</Text>
+                <Text>{item.clock_in}</Text>
               </TableCell>
               <TableCell>
-                <Text>{item.timeIn}</Text>
-              </TableCell>
-              <TableCell>
-                <Text>{item.timeOut}</Text>
+                <Text>{item.clock_out}</Text>
               </TableCell>
               <TableCell>
                 <Badge color={isLate ? "red" : "green"} icon={Clock}>
