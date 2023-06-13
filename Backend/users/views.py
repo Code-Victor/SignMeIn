@@ -231,10 +231,8 @@ class GetQrcodeIdView(APIView):
     serializer_class = QrcodeSerializer
     permission_classes = [IsWorker&permissions.IsAuthenticated]
     def get(self, request, organization_id):
-        print(organization_id)
         qrcode_instance = Qrcode.objects.filter(organization=organization_id)
         qrcode_uuid = list(qrcode_instance.values('UUID'))[0]['UUID']
-        print(qrcode_uuid)
         if not qrcode_instance:
             return Response(
                 {"res": "Object with todo id does not exists"},
