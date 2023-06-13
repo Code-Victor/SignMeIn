@@ -33,11 +33,8 @@ const Hero = () => {
         <p className="mt-4 text-base md:text-lg text-white text-center max-w-[630px] mx-auto">
           {/* Effortlessly track attendance with our QR-code software. Quick scans
           record and organize data in real-time, saving you time and effort. */}
-          Say goodbye to manual attendance taking and embrace the convenience of
-          QR codes. Our innovative solution simplifies attendance tracking,
-          saving you time and effort. With just a scan employees can quickly
-          check-in, ensuring accurate and efficient record-keeping. Experience
-          the power of seamless attendance management with our QR code
+          Effortless attendance tracking with QR codes. Simplify record-keeping,
+          ensure accuracy. Experience seamless management with our QR code
           technology.
         </p>
         <div className="mt-8 flex gap-4 justify-center">

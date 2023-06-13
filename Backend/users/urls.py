@@ -3,7 +3,7 @@ from .views import (OrganizationRegisterView,
                     OrganizationDashboardView, AddWorkerView, 
                     WorkersDashboardView, LoginView, ClockInView,
                     ClockOutView, WorkersDetailView, 
-                    AttendanceDetailView, GenerateQrcodeView, GetQrcodeIdView
+                    AttendanceDetailView, GenerateQrcodeView, GetQrcodeIdView, TimeRecordView
                     )
 
 #API endpoints 
@@ -18,5 +18,6 @@ urlpatterns = [
     path('clock_out/<int:qrcode_id>', ClockOutView.as_view()),
     path('worker/attendance_history', AttendanceDetailView.as_view()),
     path('organization/<int:organization_id>/generate_code', GenerateQrcodeView.as_view()),
-    path('scan_code/<int:organization_id>', GetQrcodeIdView.as_view())
+    path('scan_code/<int:organization_id>', GetQrcodeIdView.as_view()),
+    path('time_record', TimeRecordView.as_view())
 ]
