@@ -181,12 +181,9 @@ class AttendanceDetailView(APIView):
         
     def get(self, request, *args, **kwargs):
         get_user_attendance = Attendance.objects.filter(worker=request.user.id).values('date', 'clock_in', 'clock_out')
-        user_attendace = {}
-        increment = 1
+        user_attendace = []
         for attendance in get_user_attendance:
-            print(attendance)
-            user_attendace[increment] = attendance
-            increment += 1
+            user_attendace.append(attendance)
 
         return Response(user_attendace, status=status.HTTP_200_OK)
 
