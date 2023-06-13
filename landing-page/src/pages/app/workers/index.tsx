@@ -58,7 +58,7 @@ const Dashboard: NextPageWithLayout = () => {
           </div>{" "}
           <div className="flex flex-col gap-1">
             <p>Total attendance</p>
-            <h2 className="text-2xl font-bold">2,000</h2>
+            <h2 className="text-2xl font-bold">{data?.length}</h2>
           </div>
         </Carousel.Slide>
         <Carousel.Slide className="md:flex-[0_0_40%] lg:flex-[0_0_33%] bg-primary text-white py-12 rounded-lg shadow flex items-center justify-center gap-4">
