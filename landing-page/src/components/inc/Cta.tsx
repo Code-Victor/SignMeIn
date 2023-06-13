@@ -22,8 +22,7 @@ function Cta() {
         />
         <div className="flex flex-col items-center gap-6 py-24 px-5">
           <h1 className="text-white text-2xl md:text-5xl max-w-[700px] text-center font-bold">
-            Want to Boost employee promptness, streamline attendance management,
-            and save costs with SignMeIn ?
+            Boost promptness, streamline attendance, save costs with SignMeIn.
           </h1>
           <Button size={{ initial: "md", md: "lg" }} color="light">
             Get started now
