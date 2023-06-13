@@ -7,3 +7,5 @@ export { default as About } from "./About";
 export { default as Features } from "./Features";
 export { default as SignupForm } from "./SignupForm";
 export { default as Sidebar } from "./Sidebar";
+export { default as LoginForm } from "./LoginForm";
+export { default as AddWorkerForm } from "./AddWorkerForm";

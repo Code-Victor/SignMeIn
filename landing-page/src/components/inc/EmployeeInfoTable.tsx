@@ -16,6 +16,7 @@ import {
 import { Button } from "../base";
 import Link from "next/link";
 import { MoreIcon } from "../icons";
+import { GetWorkersResponse } from "@/api/types";
 
 const data = [
   {
@@ -54,28 +55,30 @@ const data = [
     email: "oluwaborihamzat@gmail.com",
   },
 ];
-function EmployeeInfoTable() {
+function EmployeeInfoTable({ data }: { data?: GetWorkersResponse }) {
   return (
     <Card>
       <Table>
         <TableHead>
           <TableRow>
-            <TableHeaderCell>Position</TableHeaderCell>
+            <TableHeaderCell>id</TableHeaderCell>
             <TableHeaderCell>Name</TableHeaderCell>
-            <TableHeaderCell>Role</TableHeaderCell>
-            <TableHeaderCell>Avg Check-in</TableHeaderCell>
+            <TableHeaderCell>gender</TableHeaderCell>
+            <TableHeaderCell>age</TableHeaderCell>
+            <TableHeaderCell>Actions</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => {
+          {data?.organization_workers.map((item, index) => {
             return (
-              <TableRow key={item.name}>
-                <TableCell>{item.name}</TableCell>
+              <TableRow key={item.first_name}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{`${item.first_name} ${item.last_name}`}</TableCell>
                 <TableCell>
-                  <Text>{item.Role}</Text>
+                  <Text>{item.gender}</Text>
                 </TableCell>
                 <TableCell>
-                  <Text>{item.email}</Text>
+                  <Text>{item.age}</Text>
                 </TableCell>
                 <TableCell>
                   <button>

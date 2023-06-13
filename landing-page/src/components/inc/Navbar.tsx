@@ -2,13 +2,13 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../base";
+import { signIn } from "next-auth/react";
 
 const Navbar = ({ main = false }: { main?: boolean }) => {
   const pathname = usePathname();
   const home = pathname === "/";
   const login = pathname === "/login";
   const signup = pathname === "/signup";
-  console.log(pathname);
 
   return (
     <nav
@@ -27,11 +27,13 @@ const Navbar = ({ main = false }: { main?: boolean }) => {
           {login ? (
             ""
           ) : (
-            <Link href="/signin">
-              <Button size={{ initial: "md", md: "lg" }} outline={true}>
-                Sign in
-              </Button>
-            </Link>
+            <Button
+              size={{ initial: "md", md: "lg" }}
+              outline={true}
+              onClick={() => signIn()}
+            >
+              Sign in
+            </Button>
           )}
           {signup ? (
             ""

@@ -13,6 +13,7 @@ import {
 } from "@tremor/react";
 import { Button } from "../base";
 import Link from "next/link";
+import { useQuery } from "react-query";
 
 const Clock = () => {
   return (
@@ -86,54 +87,18 @@ const data = [
   },
 ];
 
-const EmployeeTable = ({ full = false }: { full?: boolean }) => (
-  <Card>
-    {!full && (
-      <Flex justifyContent="between" alignItems="center" className="mb-5">
-        <Title>Time Records</Title>
-        <Link href="/app/organizations/history">
-          <Button>view all</Button>
-        </Link>
-      </Flex>
-    )}
-    <div className="flex flex-col gap-2 md:hidden">
-      {data.slice(0, full ? data.length : 5).map((item) => {
-        const timeIn = item.timeIn.replace("AM", "").split(":");
-        const timeInHour = parseInt(timeIn[0]);
-        const timeInMin = parseInt(timeIn[1]);
-        const timeInTime = timeInHour * 60 + timeInMin;
-        const isLate = timeInTime > 480;
-        return (
-          <Card key={item.name} className="flex flex-col gap">
-            <div className="flex justify-between">
-              <p>{item.name}</p>
-              <Badge color={isLate ? "red" : "green"} icon={Clock}>
-                {isLate ? "late" : "on time"}
-              </Badge>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-primary">Check in time</p>
-              <p className="text-primary">Check out time</p>
-            </div>
-            <div className="flex justify-between">
-              <p>{item.timeIn}</p>
-              <p>{item.timeOut}</p>
-            </div>
-          </Card>
-        );
-      })}
-    </div>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell>Role</TableHeaderCell>
-          <TableHeaderCell>Time In</TableHeaderCell>
-          <TableHeaderCell>Time Out</TableHeaderCell>
-          <TableHeaderCell>Status</TableHeaderCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
+const EmployeeTable = ({ full = false }: { full?: boolean }) => {
+  return (
+    <Card>
+      {!full && (
+        <Flex justifyContent="between" alignItems="center" className="mb-5">
+          <Title>Time Records</Title>
+          <Link href="/app/organizations/history">
+            <Button>view all</Button>
+          </Link>
+        </Flex>
+      )}
+      <div className="flex flex-col gap-2 md:hidden">
         {data.slice(0, full ? data.length : 5).map((item) => {
           const timeIn = item.timeIn.replace("AM", "").split(":");
           const timeInHour = parseInt(timeIn[0]);
@@ -141,27 +106,65 @@ const EmployeeTable = ({ full = false }: { full?: boolean }) => (
           const timeInTime = timeInHour * 60 + timeInMin;
           const isLate = timeInTime > 480;
           return (
-            <TableRow key={item.name}>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>
-                <Text>{item.Role}</Text>
-              </TableCell>
-              <TableCell>
-                <Text>{item.timeIn}</Text>
-              </TableCell>
-              <TableCell>
-                <Text>{item.timeOut}</Text>
-              </TableCell>
-              <TableCell>
+            <Card key={item.name} className="flex flex-col gap">
+              <div className="flex justify-between">
+                <p>{item.name}</p>
                 <Badge color={isLate ? "red" : "green"} icon={Clock}>
                   {isLate ? "late" : "on time"}
                 </Badge>
-              </TableCell>
-            </TableRow>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-primary">Check in time</p>
+                <p className="text-primary">Check out time</p>
+              </div>
+              <div className="flex justify-between">
+                <p>{item.timeIn}</p>
+                <p>{item.timeOut}</p>
+              </div>
+            </Card>
           );
         })}
-      </TableBody>
-    </Table>
-  </Card>
-);
+      </div>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Name</TableHeaderCell>
+            <TableHeaderCell>Role</TableHeaderCell>
+            <TableHeaderCell>Time In</TableHeaderCell>
+            <TableHeaderCell>Time Out</TableHeaderCell>
+            <TableHeaderCell>Status</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.slice(0, full ? data.length : 5).map((item) => {
+            const timeIn = item.timeIn.replace("AM", "").split(":");
+            const timeInHour = parseInt(timeIn[0]);
+            const timeInMin = parseInt(timeIn[1]);
+            const timeInTime = timeInHour * 60 + timeInMin;
+            const isLate = timeInTime > 480;
+            return (
+              <TableRow key={item.name}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>
+                  <Text>{item.Role}</Text>
+                </TableCell>
+                <TableCell>
+                  <Text>{item.timeIn}</Text>
+                </TableCell>
+                <TableCell>
+                  <Text>{item.timeOut}</Text>
+                </TableCell>
+                <TableCell>
+                  <Badge color={isLate ? "red" : "green"} icon={Clock}>
+                    {isLate ? "late" : "on time"}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </Card>
+  );
+};
 export default EmployeeTable;

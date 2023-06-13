@@ -1,8 +1,7 @@
-import { Footer, Navbar } from "@/components/inc";
+import { Footer, Navbar, LoginForm } from "@/components/inc";
 import Image from "next/image";
 
-
-export default function SignIn() {
+export default function Login() {
   return (
     <>
       <Navbar />
@@ -22,15 +21,12 @@ export default function SignIn() {
             width={129}
             height={280}
           />
-          <div>
-            <h1>Create your account</h1>
-            <p>Let`s get you started</p>
-            <form>
-              <div className="flex flex-col gap-4">
-                <label>Fullname</label>
-                <input id="fullname"></input>
-              </div>
-            </form>
+          <div className="max-w-lg mx-auto w-full">
+            <h1 className="text-3xl font-bold text-center">Welcome Back</h1>
+            <p className="text-center text-gray-500 mt-2">
+              Login to your account
+            </p>
+            <LoginForm />
           </div>
         </div>
       </main>

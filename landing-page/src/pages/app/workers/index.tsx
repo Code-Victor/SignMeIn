@@ -1,4 +1,5 @@
 import { Button } from "@/components/base";
+import { useSession, signIn, signOut } from "next-auth/react";
 import {
   ClockIcon,
   ChartIcon,
@@ -14,6 +15,8 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { Col, Grid, Icon, Text, Title } from "@tremor/react";
 import Image from "next/image";
 import React, { ReactElement } from "react";
+import { useRouter } from "next/router";
+import Scanner from "@/components/inc/Scanner";
 
 const links = [
   {
@@ -34,10 +37,14 @@ const links = [
 ];
 
 const Dashboard: NextPageWithLayout = () => {
+  const { data: session, status } = useSession();
+  const name = session?.user.username;
+  const [open, setOpen] = React.useState(false);
+  const [type, setType] = React.useState<"clock_in" | "clock_out">("clock_in");
   return (
     <>
       <h1 className="text-xl font-medium mb-4">
-        Hello, <span className="font-bold">Oluwaseun Hamzat</span>
+        Hello, <span className="font-bold">{name}</span>
       </h1>
       <Carousel>
         <Carousel.Slide className="md:flex-[0_0_40%] lg:flex-[0_0_33%] bg-primary text-white py-12 rounded-lg shadow flex items-center justify-center gap-4">
@@ -69,10 +76,25 @@ const Dashboard: NextPageWithLayout = () => {
         </Carousel.Slide>
       </Carousel>
       <div className="flex justify-center gap-2 mt-2 mb-6">
-        <Button size="lg">Clock in</Button>
-        <Button size="lg" disabled>
+        <Button
+          size="lg"
+          onClick={() => {
+            setOpen(true);
+            setType("clock_in");
+          }}
+        >
+          Clock in
+        </Button>
+        <Button
+          size="lg"
+          onClick={() => {
+            setOpen(true);
+            setType("clock_out");
+          }}
+        >
           Clock out
         </Button>
+        <Scanner open={open} onChange={(open) => setOpen(open)} type={type} />
       </div>
       <HistoryTable />
     </>
@@ -80,6 +102,20 @@ const Dashboard: NextPageWithLayout = () => {
 };
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const name = session?.user.username;
+  console.log(session);
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+  if (session?.user.role !== "is_worker") {
+    router.push("/login?message=unauthorized");
+  }
+
+  if (status === "unauthenticated") {
+    return <p>Access Denied</p>;
+  }
   return (
     <div className="flex-col flex md:flex-row">
       <Sidebar links={links} />
@@ -89,13 +125,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <h1 className="md:hidden text-primary text-2xl font-bold">
               SignMeIn
             </h1>
-            <Image
-              src="/img/avatar.png"
-              alt="avatar"
-              width={60}
-              height={60}
-              className="h-12 w-12"
-            />
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+                {name?.[0]}
+              </div>
+
+              <Text className="text-lg font-medium">{name}</Text>
+            </div>
           </nav>
           <div className="px-4 pt-2">{children}</div>
         </div>

@@ -1,8 +1,8 @@
 import { Footer, Navbar, SignupForm } from "@/components/inc";
 import Image from "next/image";
-1;
-export default function Home() {
-  return ( 
+
+export default function SignUp() {
+  return (
     <>
       <Navbar />
       <main>
@@ -25,8 +25,10 @@ export default function Home() {
             <h1 className="text-3xl font-bold text-center">
               Create your account
             </h1>
-            <p className="text-center text-gray-500 mt-2">Let’s get you started with you started</p>
-            <SignupForm/>
+            <p className="text-center text-gray-500 mt-2">
+              Let’s get you started with you started
+            </p>
+            <SignupForm />
           </div>
         </div>
       </main>
