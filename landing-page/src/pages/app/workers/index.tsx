@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import Scanner from "@/components/inc/Scanner";
 import { useQuery } from "react-query";
 import { getWorkerAttendance } from "@/api";
+import { Ring } from "@uiball/loaders";
 
 const links = [
   {
@@ -43,7 +44,7 @@ const Dashboard: NextPageWithLayout = () => {
   const name = session?.user.username;
   const [open, setOpen] = React.useState(false);
   const [type, setType] = React.useState<"clock_in" | "clock_out">("clock_in");
-  const { data } = useQuery("UI", () =>
+  const { data } = useQuery("workerAttendanceHistory", () =>
     getWorkerAttendance(session?.user.access as string)
   );
   return (
@@ -55,7 +56,7 @@ const Dashboard: NextPageWithLayout = () => {
         <Carousel.Slide className="md:flex-[0_0_40%] lg:flex-[0_0_33%] bg-primary text-white py-12 rounded-lg shadow flex items-center justify-center gap-4">
           <div className="flex items-center justify-center bg-white rounded-full w-12 h-12 text-primary">
             <BriefcaseIcon />
-          </div>{" "}
+          </div>
           <div className="flex flex-col gap-1">
             <p>Total attendance</p>
             <h2 className="text-2xl font-bold">{data?.length}</h2>
@@ -63,20 +64,20 @@ const Dashboard: NextPageWithLayout = () => {
         </Carousel.Slide>
         <Carousel.Slide className="md:flex-[0_0_40%] lg:flex-[0_0_33%] bg-primary text-white py-12 rounded-lg shadow flex items-center justify-center gap-4">
           <div className="flex items-center justify-center bg-white rounded-full w-12 h-12 text-primary">
-            <BriefcaseIcon />
-          </div>{" "}
+            <ClockIcon />
+          </div>
           <div className="flex flex-col gap-1">
-            <p>Total attendance</p>
-            <h2 className="text-2xl font-bold">2,000</h2>
+            <p>Average Time In</p>
+            <h2 className="text-2xl font-bold">08:01 AM</h2>
           </div>
         </Carousel.Slide>
         <Carousel.Slide className="md:flex-[0_0_40%] lg:flex-[0_0_33%] bg-primary text-white py-12 rounded-lg shadow flex items-center justify-center gap-4">
           <div className="flex items-center justify-center bg-white rounded-full w-12 h-12 text-primary">
-            <BriefcaseIcon />
-          </div>{" "}
+            <ClockIcon />
+          </div>
           <div className="flex flex-col gap-1">
-            <p>Total attendance</p>
-            <h2 className="text-2xl font-bold">2,000</h2>
+            <p>Average Time Out</p>
+            <h2 className="text-2xl font-bold">5:06 PM</h2>
           </div>
         </Carousel.Slide>
       </Carousel>
@@ -112,7 +113,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const name = session?.user.username;
   console.log(session);
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="min-h-screen min-w-screen grid place-items-center">
+        <Ring size={50} color="#663ed6" />
+      </div>
+    );
   }
   if (session?.user.role !== "is_worker") {
     router.push("/login?message=unauthorized");
