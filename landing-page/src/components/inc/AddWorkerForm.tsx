@@ -16,6 +16,8 @@ import {
 } from "react-query";
 import { addWorker } from "../../api";
 import { Card } from "@tremor/react";
+import { Orbit } from "@uiball/loaders";
+
 const formSchema = z
   .object({
     first_name: z.string().min(1, "First name is required"),
@@ -112,7 +114,13 @@ export default function AddWorkerForm({
             {...register("confirm_password")}
             error={err("confirm_password")}
           />
-          <Button>{mutation.isLoading ? "Loading..." : "Add Worker"}</Button>
+          <Button type="submit" disabled={mutation.isLoading}>
+            {mutation.isLoading ? (
+              <Orbit size={35} color="#231F20" />
+            ) : (
+              "Add Worker"
+            )}
+          </Button>
         </form>
       </Card>
     </div>

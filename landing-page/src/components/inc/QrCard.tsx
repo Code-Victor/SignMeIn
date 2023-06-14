@@ -6,6 +6,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery } from "react-query";
 import { getQrCode } from "@/api";
+import { Ring } from "@uiball/loaders";
 
 function QrCard() {
   const { data: session } = useSession();
@@ -22,7 +23,12 @@ function QrCard() {
       refetchOnWindowFocus: false,
     }
   );
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <Card className="flex flex-col row-span-2 h-full p-2 items-center justify-center">
+        <Ring size={50} color="#663ed6" />
+      </Card>
+    );
   if (error) return <div>Error</div>;
   return (
     <Card className="flex flex-col row-span-2 h-full p-2">

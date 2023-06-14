@@ -1,9 +1,13 @@
 import { Footer, Navbar, LoginForm } from "@/components/inc";
+import Head from "next/head";
 import Image from "next/image";
 
 export default function Login() {
   return (
     <>
+      <Head>
+        <title>SignMeIn | Login</title>
+      </Head>
       <Navbar />
       <main>
         <div className="bg-white min-h-[calc(100vh_-_96px)] px-5 flex items-center justify-center relative isolate">

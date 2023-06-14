@@ -7,6 +7,7 @@ import { AddWorkerForm } from "@/components/inc";
 import { useSession } from "next-auth/react";
 import { useQuery, useQueryClient } from "react-query";
 import { getWorkers } from "@/api/";
+import { Ring } from "@uiball/loaders";
 
 const Workers: NextPageWithLayout = () => {
   const [openModal, setOpenModal] = React.useState(false);
@@ -19,8 +20,12 @@ const Workers: NextPageWithLayout = () => {
   } = useQuery("employeeInfo", () =>
     getWorkers({ id: session?.user?.id!, access: session?.user?.access! })
   );
-  console.log(info);
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="min-h-screen min-w-screen grid place-items-center">
+        <Ring size={50} color="#663ed6" />
+      </div>
+    );
   if (error) return <div>Error</div>;
   return (
     <>

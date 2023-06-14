@@ -103,31 +103,35 @@ const HistoryTable = ({
       </Flex>
     )}
     <div className="flex flex-col gap-2 md:hidden">
-      {data?.slice(0, full ? data.length : 5).map((item, i) => {
-        const timeIn = item.clock_in.replace("AM", "").split(":");
-        const timeInHour = parseInt(timeIn[0]);
-        const timeInMin = parseInt(timeIn[1]);
-        const timeInTime = timeInHour * 60 + timeInMin;
-        const isLate = timeInTime > 480;
-        return (
-          <Card key={i} className="flex flex-col gap">
-            <div className="flex justify-between">
-              <p>{item.date}</p>
-              <Badge color={isLate ? "red" : "green"} icon={Clock}>
-                {isLate ? "late" : "on time"}
-              </Badge>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-primary">Check in time</p>
-              <p className="text-primary">Check out time</p>
-            </div>
-            <div className="flex justify-between">
-              <p>{item.clock_in}</p>
-              <p>{item.clock_out}</p>
-            </div>
-          </Card>
-        );
-      })}
+      {data
+        ?.slice()
+        .reverse()
+        .slice(0, full ? data.length : 5)
+        .map((item, i) => {
+          const timeIn = item.clock_in.replace("AM", "").split(":");
+          const timeInHour = parseInt(timeIn[0]);
+          const timeInMin = parseInt(timeIn[1]);
+          const timeInTime = timeInHour * 60 + timeInMin;
+          const isLate = timeInTime > 480;
+          return (
+            <Card key={i} className="flex flex-col gap">
+              <div className="flex justify-between">
+                <p>{item.date}</p>
+                <Badge color={isLate ? "red" : "green"} icon={Clock}>
+                  {isLate ? "late" : "on time"}
+                </Badge>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-primary">Check in time</p>
+                <p className="text-primary">Check out time</p>
+              </div>
+              <div className="flex justify-between">
+                <p>{item.clock_in}</p>
+                <p>{item.clock_out}</p>
+              </div>
+            </Card>
+          );
+        })}
     </div>
     <Table className="hidden md:block">
       <TableHead>
@@ -139,30 +143,34 @@ const HistoryTable = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {data?.slice(0, full ? data.length : 5).map((item, i) => {
-          const timeIn = item.clock_in.replace("AM", "").split(":");
-          const timeInHour = parseInt(timeIn[0]);
-          const timeInMin = parseInt(timeIn[1]);
-          const timeInTime = timeInHour * 60 + timeInMin;
-          const isLate = timeInTime > 480;
-          return (
-            <TableRow key={i}>
-              <TableCell>{item.date}</TableCell>
+        {data
+          ?.slice()
+          .reverse()
+          .slice(0, full ? data.length : 5)
+          .map((item, i) => {
+            const timeIn = item.clock_in.replace("AM", "").split(":");
+            const timeInHour = parseInt(timeIn[0]);
+            const timeInMin = parseInt(timeIn[1]);
+            const timeInTime = timeInHour * 60 + timeInMin;
+            const isLate = timeInTime > 480;
+            return (
+              <TableRow key={i}>
+                <TableCell>{item.date}</TableCell>
 
-              <TableCell>
-                <Text>{item.clock_in}</Text>
-              </TableCell>
-              <TableCell>
-                <Text>{item.clock_out}</Text>
-              </TableCell>
-              <TableCell>
-                <Badge color={isLate ? "red" : "green"} icon={Clock}>
-                  {isLate ? "late" : "on time"}
-                </Badge>
-              </TableCell>
-            </TableRow>
-          );
-        })}
+                <TableCell>
+                  <Text>{item.clock_in}</Text>
+                </TableCell>
+                <TableCell>
+                  <Text>{item.clock_out}</Text>
+                </TableCell>
+                <TableCell>
+                  <Badge color={isLate ? "red" : "green"} icon={Clock}>
+                    {isLate ? "late" : "on time"}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            );
+          })}
       </TableBody>
     </Table>
   </Card>

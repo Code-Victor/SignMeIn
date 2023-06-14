@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { getError } from "@/utils";
 import { signIn } from "next-auth/react";
 import { useMutation } from "react-query";
+import { Orbit } from "@uiball/loaders";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email").min(1, "Email is required"),
@@ -54,7 +55,9 @@ export default function LoginForm() {
         {...register("password")}
         error={err("password")}
       />
-      <Button disabled={loading}>{loading ? "Loading" : "Login"}</Button>
+      <Button disabled={loading}>
+        {loading ? <Orbit size={35} color="#ffffff" /> : "Login"}
+      </Button>
     </form>
   );
 }

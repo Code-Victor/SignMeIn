@@ -3,7 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv(
   {
-    base: "font-medium rounded-full active:opacity-80",
+    base: "flex justify-center font-medium rounded-full active:opacity-80",
     variants: {
       color: {
         primary: "bg-primary text-white",
@@ -22,7 +22,7 @@ const button = tv(
       size: "md",
       color: "primary",
     },
-    compoundVariants: [ 
+    compoundVariants: [
       {
         color: "primary",
         outline: true,
@@ -48,8 +48,13 @@ export interface ButtonProps
     VariantProps<typeof button>
   > {}
 
-function Button({ size, color, className,outline, ...props }: ButtonProps) {
-  return <button className={button({ size, color, className,outline })} {...props} />;
+function Button({ size, color, className, outline, ...props }: ButtonProps) {
+  return (
+    <button
+      className={button({ size, color, className, outline })}
+      {...props}
+    />
+  );
 }
 
 export default Button;

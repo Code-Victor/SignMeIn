@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect } from "react";
+import { Ring } from "@uiball/loaders";
 
 const links = [
   {
@@ -104,7 +105,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const name = session?.user.username;
   console.log(session);
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="min-h-screen min-w-screen grid place-items-center">
+        <Ring size={50} color="#663ed6" />
+      </div>
+    );
   }
   if (session?.user.role !== "is_organization") {
     router.push("/login?message=unauthorized");
