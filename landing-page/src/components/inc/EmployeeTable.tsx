@@ -14,7 +14,10 @@ import {
 import { Button } from "../base";
 import Link from "next/link";
 import { useQuery } from "react-query";
-
+import { useSession } from "next-auth/react";
+import { getAttendanceRecord } from "@/api";
+import { Ring } from "@uiball/loaders";
+import { convertTime } from "@/utils";
 const Clock = () => {
   return (
     <svg
@@ -34,60 +37,23 @@ const Clock = () => {
   );
 };
 
-const data = [
-  {
-    name: "Viola Amherd",
-    Role: "Federal Councillor",
-    timeIn: "8:00AM",
-    timeOut: "5:04PM",
-    status: "active",
-  },
-  {
-    name: "Simonetta Sommaruga",
-    Role: "Federal Councillor",
-
-    timeIn: "7:54AM",
-    timeOut: "5:20PM",
-    status: "active",
-  },
-  {
-    name: "Alain Berset",
-    Role: "Federal Councillor",
-    timeIn: "8:05AM",
-    timeOut: "5:10PM",
-    status: "active",
-  },
-  {
-    name: "Ignazio Cassis",
-    Role: "Federal Councillor",
-    timeIn: "8:00AM",
-    timeOut: "5:28PM",
-    status: "active",
-  },
-  {
-    name: "Ueli Maurer",
-    Role: "Federal Councillor",
-    timeIn: "9:00AM",
-    timeOut: "4:04PM",
-    status: "active",
-  },
-  {
-    name: "Guy Parmelin",
-    Role: "Federal Councillor",
-    timeIn: "8:00AM",
-    timeOut: "5:04PM",
-    status: "active",
-  },
-  {
-    name: "Karin Keller-Sutter",
-    Role: "Federal Councillor",
-    timeIn: "8:00AM",
-    timeOut: "5:04PM",
-    status: "active",
-  },
-];
-
 const EmployeeTable = ({ full = false }: { full?: boolean }) => {
+  const { data: session } = useSession();
+  const { data, isLoading, error } = useQuery(
+    "AttendanceRecord",
+    () => getAttendanceRecord(session?.user.access as string),
+    {
+      refetchInterval: 60000, //refetches every 60 seconds
+    }
+  );
+
+  if (isLoading)
+    return (
+      <Card className="flex h-72 p-2 items-center justify-center">
+        <Ring size={50} color="#663ed6" />
+      </Card>
+    );
+  if (error) return <div>Error</div>;
   return (
     <Card>
       {!full && (
@@ -99,69 +65,75 @@ const EmployeeTable = ({ full = false }: { full?: boolean }) => {
         </Flex>
       )}
       <div className="flex flex-col gap-2 md:hidden">
-        {data.slice(0, full ? data.length : 5).map((item) => {
-          const timeIn = item.timeIn.replace("AM", "").split(":");
-          const timeInHour = parseInt(timeIn[0]);
-          const timeInMin = parseInt(timeIn[1]);
-          const timeInTime = timeInHour * 60 + timeInMin;
-          const isLate = timeInTime > 480;
-          return (
-            <Card key={item.name} className="flex flex-col gap">
-              <div className="flex justify-between">
-                <p>{item.name}</p>
-                <Badge color={isLate ? "red" : "green"} icon={Clock}>
-                  {isLate ? "late" : "on time"}
-                </Badge>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-primary">Check in time</p>
-                <p className="text-primary">Check out time</p>
-              </div>
-              <div className="flex justify-between">
-                <p>{item.timeIn}</p>
-                <p>{item.timeOut}</p>
-              </div>
-            </Card>
-          );
-        })}
+        {data
+          ?.slice()
+          .reverse()
+          .slice(0, full ? data.length : 5)
+          .map((item) => {
+            const timeIn = item.clock_in.replace("AM", "").split(":");
+            const timeInHour = parseInt(timeIn[0]);
+            const timeInMin = parseInt(timeIn[1]);
+            const timeInTime = timeInHour * 60 + timeInMin;
+            const isLate = timeInTime > 480;
+            return (
+              <Card key={item.name} className="flex flex-col gap">
+                <div className="flex justify-between">
+                  <p>{item.name}</p>
+                  <Badge color={isLate ? "red" : "green"} icon={Clock}>
+                    {isLate ? "late" : "on time"}
+                  </Badge>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-primary">Check in time</p>
+                  <p className="text-primary">Check out time</p>
+                </div>
+                <div className="flex justify-between">
+                  <p>{convertTime(item.clock_in)}</p>
+                  <p>{convertTime(item.clock_out)}</p>
+                </div>
+              </Card>
+            );
+          })}
       </div>
       <Table>
         <TableHead>
           <TableRow>
             <TableHeaderCell>Name</TableHeaderCell>
-            <TableHeaderCell>Role</TableHeaderCell>
+
             <TableHeaderCell>Time In</TableHeaderCell>
             <TableHeaderCell>Time Out</TableHeaderCell>
             <TableHeaderCell>Status</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.slice(0, full ? data.length : 5).map((item) => {
-            const timeIn = item.timeIn.replace("AM", "").split(":");
-            const timeInHour = parseInt(timeIn[0]);
-            const timeInMin = parseInt(timeIn[1]);
-            const timeInTime = timeInHour * 60 + timeInMin;
-            const isLate = timeInTime > 480;
-            return (
-              <TableRow key={item.name}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>
-                  <Text>{item.Role}</Text>
-                </TableCell>
-                <TableCell>
-                  <Text>{item.timeIn}</Text>
-                </TableCell>
-                <TableCell>
-                  <Text>{item.timeOut}</Text>
-                </TableCell>
-                <TableCell>
-                  <Badge color={isLate ? "red" : "green"} icon={Clock}>
-                    {isLate ? "late" : "on time"}
-                  </Badge>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {data
+            ?.slice()
+            .reverse()
+            .slice(0, full ? data.length : 5)
+            .map((item) => {
+              const timeIn = item.clock_in.replace("AM", "").split(":");
+              const timeInHour = parseInt(timeIn[0]);
+              const timeInMin = parseInt(timeIn[1]);
+              const timeInTime = timeInHour * 60 + timeInMin;
+              const isLate = timeInTime > 480;
+              return (
+                <TableRow key={item.name}>
+                  <TableCell>{item.name}</TableCell>
+
+                  <TableCell>
+                    <Text>{convertTime(item.clock_in)}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Text>{convertTime(item.clock_out)}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Badge color={isLate ? "red" : "green"} icon={Clock}>
+                      {isLate ? "late" : "on time"}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
     </Card>

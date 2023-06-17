@@ -1,5 +1,6 @@
 import { FormSchemaType } from "@/components/inc/AddWorkerForm";
 import {
+  AttendanceRecord,
   GetWorkerAttendanceHistoryResponse,
   GetWorkersResponse,
 } from "./types";
@@ -146,6 +147,23 @@ export async function getWorkerAttendance(
 ): Promise<{ date: string; clock_in: string; clock_out: string }[]> {
   const response = await fetch(
     `https://signmein-api.onrender.com/worker/attendance_history`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+    }
+  );
+  if (!response.ok) throw new Error("Failed to complete the request");
+
+  return await response.json();
+}
+export async function getAttendanceRecord(
+  access: string
+): Promise<AttendanceRecord> {
+  const response = await fetch(
+    `https://signmein-api.onrender.com/attendance_record`,
     {
       method: "GET",
       headers: {

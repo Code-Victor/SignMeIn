@@ -13,6 +13,7 @@ import {
 } from "@tremor/react";
 import { Button } from "../base";
 import Link from "next/link";
+import { convertTime } from "@/utils";
 
 const Clock = () => {
   return (
@@ -126,8 +127,8 @@ const HistoryTable = ({
                 <p className="text-primary">Check out time</p>
               </div>
               <div className="flex justify-between">
-                <p>{item.clock_in}</p>
-                <p>{item.clock_out}</p>
+                <p>{convertTime(item.clock_in)}</p>
+                <p>{convertTime(item.clock_out)}</p>
               </div>
             </Card>
           );
@@ -158,10 +159,10 @@ const HistoryTable = ({
                 <TableCell>{item.date}</TableCell>
 
                 <TableCell>
-                  <Text>{item.clock_in}</Text>
+                  <Text>{convertTime(item.clock_in)}</Text>
                 </TableCell>
                 <TableCell>
-                  <Text>{item.clock_out}</Text>
+                  <Text>{convertTime(item.clock_out)}</Text>
                 </TableCell>
                 <TableCell>
                   <Badge color={isLate ? "red" : "green"} icon={Clock}>

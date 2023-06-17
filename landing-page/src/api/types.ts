@@ -22,3 +22,9 @@ export interface OrganizationWorker {
   user: number;
   organization: number;
 }
+export type AttendanceRecord = {
+  name: string;
+  date: string;
+  clock_in: string;
+  clock_out: string;
+}[];
