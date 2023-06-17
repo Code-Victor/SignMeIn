@@ -39,6 +39,7 @@ function Scanner({
       });
       console.log(qrcode);
       onChange(false);
+      setQrcode("");
     }
     if (type === "clock_out") {
       clockOutMutation.mutate({
@@ -47,6 +48,7 @@ function Scanner({
       });
       console.log(qrcode);
       onChange(false);
+      setQrcode("");
     }
   }, [qrcode]);
   if (!open) return null;
