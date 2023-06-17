@@ -263,4 +263,36 @@ class TimeRecordView(APIView):
             workers_attendance[worker_id['first_name']+worker_id['last_name']] = get_workers_attendance
 
         return Response(workers_attendance, status=status.HTTP_200_OK)
+
+
+class AttendanceRecordView(APIView):
+    def get_object(self, organization_id):
+        try:
+            return list(Workers.objects.filter(organization = organization_id).values('user_id', 'first_name', 'last_name'))
+        except Workers.DoesNotExist:
+            return None
+    serializer_class= AttendanceSerializer
+    permission_classes = [IsOrganization&permissions.IsAuthenticated]
+    
+    def get(self, request):
+        current_user_id = request.user.id
+        organization_id = list(Organizations.objects.filter(user=current_user_id).values('id'))[0]['id']
+        workers_instances = self.get_object(organization_id)
+        organization_workers_id = []
+        for worker in workers_instances:
+            organization_workers_id.append(worker['user_id'])
+        workers_attendance = []
+        all_attendance = list(Attendance.objects.all())
+        for attendance in all_attendance:
+            worker_attendance = {}
+            if attendance.worker.id in organization_workers_id:
+                first_name = list(Workers.objects.filter(user_id = attendance.worker.id).values('first_name'))[0]['first_name']
+                last_name = list(Workers.objects.filter(user_id = attendance.worker.id).values('last_name'))[0]['last_name']
+                worker_attendance['name'] = first_name + last_name
+                worker_attendance['date'] = attendance.date
+                worker_attendance['clock_in'] = attendance.clock_in
+                worker_attendance['clock_out'] = attendance.clock_out
+                workers_attendance.append(worker_attendance)
+            
+        return Response(workers_attendance, status=status.HTTP_200_OK)
     
