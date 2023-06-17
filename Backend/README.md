@@ -160,3 +160,14 @@ Make sure you have postgresql installed already if you don't, visit https://www.
 > response = {
             'worker's name':[ {worker's attedance history(date, clock_in, clock_out)} ]
             }
+* 14. attendance_record - This endpoint is used to get the attendance history of the organization workers
+* Method - GET
+> response = [
+            {
+            'name'
+            'date'
+            'clock_in'
+            'clock_out'
+            }
+            ]
+
