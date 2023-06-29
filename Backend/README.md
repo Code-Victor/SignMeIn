@@ -108,7 +108,7 @@ Make sure you have postgresql installed already if you don't, visit https://www.
     "user" - user_id
     }
     
-* 8. organization/<int:organization_id>/generate_code - this endpoint is used to generate new QRCode and can only be accessed an authenticated organization
+* 8. organization/<int:user_id>/generate_code - this endpoint is used to generate new QRCode and can only be accessed an authenticated organization
 * Method - PUT
 > response = {
     "id",
