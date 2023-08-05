@@ -169,6 +169,8 @@ class OrganizationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class QrcodeSerializer(serializers.ModelSerializer):
+    organization = serializers.ReadOnlyField()
+    UUID = serializers.ReadOnlyField()
     class Meta:
         model = Qrcode
         fields ='__all__'
