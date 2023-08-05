@@ -121,10 +121,8 @@ class AddWorkerSerializer(serializers.ModelSerializer):
        
     def get_current_organization(self):
         current_organization = self.context['request'].user
-        get_current_organization_id = list(CustomUser.organization.filter(email=current_organization).values('id'))
-        organization_user_id = get_current_organization_id[0]['id']
-        organization= Organizations.objects.get(user_id=organization_user_id)
-        return organization
+        current_organization_object = Organizations.objects.get(user=current_organization)
+        return current_organization_object
         
     def save(self, **kwargs):
         user = CustomUser(
