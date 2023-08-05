@@ -15,7 +15,7 @@ urlpatterns = [
     path('add_workers', AddWorkerView.as_view()),
     path('workers/dashboard', WorkersDashboardView.as_view()),
     path('clock_in', ClockInView.as_view()),
-    path('organization/<int:organization_id>/list_workers', WorkersDetailView.as_view()),
+    path('organization/list_workers', WorkersDetailView.as_view()),
     path('clock_out/<int:qrcode_id>', ClockOutView.as_view()),
     path('worker/attendance_history', AttendanceDetailView.as_view()),
     path('organization/<int:organization_id>/generate_code', GenerateQrcodeView.as_view()),
