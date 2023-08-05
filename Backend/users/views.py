@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import (UserSerializer, OrganizationRegisterSerializer, 
                           AddWorkerSerializer, CustomLoginSerializer, AttendanceSerializer,
-                          OrganizationSerializer, QrcodeSerializer
+                          OrganizationSerializer, QrcodeSerializer, WorkersSerializer
                           )
 from .permissions import IsOrganization, IsWorker
 from .models import CustomUser, Attendance, Organizations, Workers, Qrcode
