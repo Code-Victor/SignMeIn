@@ -18,7 +18,7 @@ const Workers: NextPageWithLayout = () => {
     isLoading,
     error,
   } = useQuery("employeeInfo", () =>
-    getWorkers({ id: session?.user?.id!, access: session?.user?.access! })
+    getWorkers({ access: session?.user?.access! })
   );
   if (isLoading)
     return (
