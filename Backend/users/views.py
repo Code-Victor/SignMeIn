@@ -181,6 +181,7 @@ class GenerateQrcodeView(UpdateAPIView):
     serializer_class = QrcodeSerializer
     queryset = Qrcode.objects.all()
     permission_classes = [IsOrganization&permissions.IsAuthenticated]
+    lookup_field = "organization_id"
    
     def get_object(self):
         user_obj = self.request.user
