@@ -149,29 +149,18 @@ class ClockOutView(APIView):
         
 # Get workers details view
 class WorkersDetailView(APIView):
-    # queryset = Organizations.objects.all()
+    queryset = Organizations.objects.all()
     serializer_class = OrganizationSerializer
     permission_classes = [IsOrganization&permissions.IsAuthenticated]
     
-    def get_object(self, organization_id, user_id):
-        '''
-        Helper method to get the object with given todo_id, and user_id
-        '''
-        try:
-            return Organizations.objects.get(id=organization_id, user_id = user_id)
-        except Organizations.DoesNotExist:
-            return None
-
-    def get(self, request, organization_id, *args, **kwargs):
-        organization_instance = self.get_object(organization_id, request.user.id)
-        if not organization_instance:
-            return Response(
-                {"res": "Object with id does not exists"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        serializer = WorkersDetailView.serializer_class(organization_instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_object(self):
+        user_obj = self.request.user
+        school = Organizations.objects.get(user=user_obj)
+        return school
+    
+    def get_queryset(self):
+        organization = self.get_object(self)
+        return self.queryset.filter(organization=organization)
     
 # Attendance details view
 class AttendanceDetailView(APIView):
