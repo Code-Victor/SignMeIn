@@ -170,7 +170,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 class QrcodeSerializer(serializers.ModelSerializer):
     organization = serializers.ReadOnlyField()
-    UUID = serializers.ReadOnlyField()
+    UUID = serializers.CharField(read_only=True)
     class Meta:
         model = Qrcode
         fields ='__all__'
