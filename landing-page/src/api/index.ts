@@ -34,11 +34,10 @@ export async function addWorker(
 }
 export async function getWorkers(data: {
   access: string;
-  id: number;
 }): Promise<GetWorkersResponse> {
-  const { access, id } = data;
+  const { access } = data;
   const response = await fetch(
-    `https://signmein-api.onrender.com/organization/${id}/list_workers`,
+    `https://signmein-api.onrender.com/organization/list_workers`,
     {
       method: "GET",
       headers: {
