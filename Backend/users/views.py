@@ -159,7 +159,7 @@ class WorkersDetailView(ListAPIView):
         return organization
     
     def get_queryset(self):
-        organization = self.get_object(self)
+        organization = self.get_object()
         return self.queryset.filter(organization=organization)
     
 # Attendance details view
