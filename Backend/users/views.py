@@ -149,14 +149,14 @@ class ClockOutView(APIView):
         
 # Get workers details view
 class WorkersDetailView(ListAPIView):
-    queryset = Organizations.objects.all()
-    serializer_class = OrganizationSerializer
+    queryset = Workers.objects.all()
+    serializer_class = WorkersSerializer
     permission_classes = [IsOrganization&permissions.IsAuthenticated]
     
     def get_object(self):
         user_obj = self.request.user
-        school = Organizations.objects.get(user=user_obj)
-        return school
+        organization = Organizations.objects.get(user=user_obj)
+        return organization
     
     def get_queryset(self):
         organization = self.get_object(self)
