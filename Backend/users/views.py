@@ -1,5 +1,5 @@
 from rest_framework import status, permissions
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import (UserSerializer, OrganizationRegisterSerializer, 
@@ -148,7 +148,7 @@ class ClockOutView(APIView):
 
         
 # Get workers details view
-class WorkersDetailView(APIView):
+class WorkersDetailView(ListAPIView):
     queryset = Organizations.objects.all()
     serializer_class = OrganizationSerializer
     permission_classes = [IsOrganization&permissions.IsAuthenticated]
