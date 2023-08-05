@@ -1,5 +1,5 @@
 from rest_framework import status, permissions
-from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import (UserSerializer, OrganizationRegisterSerializer, 
@@ -95,21 +95,19 @@ class WorkersDashboardView(RetrieveAPIView):
         return self.request.user
     
 # ClockIn View 
-class ClockInView(APIView):
+class ClockInView(CreateAPIView):
     serializer_class = AttendanceSerializer
+    queryset = Attendance.objects.all()
     permission_classes = [IsWorker&permissions.IsAuthenticated]
     
-    def post(self, request):
-        data = {
-            'qrcode_id': request.data.get('qrcode_id'),
-            'worker': request.user.id,
-            'clock_in': request.data.get('clock_in'), 
-            'clock_out': request.data.get('clock_out'),    
-        }
-        serializer = self.serializer_class(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def get_object(self):
+        user_obj = self.request.user
+        worker = Workers.objects.get(user=user_obj)
+        return worker
+        
+    def perform_create(self, serializer):
+        worker = self.get_object(self)
+        return serializer.save(worker=worker)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)      
     
@@ -119,18 +117,20 @@ class ClockOutView(APIView):
     permission_classes = [IsWorker&permissions.IsAuthenticated]
     
     
-    def get_object(self, qrcode_id, user_id):
+    def get_object(self, qrcode_id, worker):
         '''
         Helper method to get the object with given todo_id, and user_id
         '''
         try:
-            return Attendance.objects.get(qrcode_id=qrcode_id, worker_id = user_id)
+            return Attendance.objects.get(qrcode_id=qrcode_id, worker=worker)
         except Attendance.DoesNotExist:
             return None
         
     
     def put(self, request, qrcode_id, *args, **kwargs):
-        attendance_instance = self.get_object(qrcode_id, request.user.id)
+        user_obj = self.request.user
+        worker = Workers.objects.get(user=user_obj)
+        attendance_instance = self.get_object(qrcode_id, worker)
         if not attendance_instance:
             return Response(
                 {"res": "Object with id does not exists"}, 
@@ -177,46 +177,28 @@ class AttendanceDetailView(APIView):
         return Response(user_attendace, status=status.HTTP_200_OK)
 
 #Generate QRcode view     
-class GenerateQrcodeView(APIView):
+class GenerateQrcodeView(UpdateAPIView):
     serializer_class = QrcodeSerializer
+    queryset = Qrcode.objects.all()
     permission_classes = [IsOrganization&permissions.IsAuthenticated]
    
-    def get_object(self, organization_id):
-        try:
-            return Qrcode.objects.get(organization_id = organization_id)
-        except Qrcode.DoesNotExist:
-            return None
+    def get_object(self):
+        user_obj = self.request.user
+        organization = Organizations.objects.get(user=user_obj)
+        return organization
     
-    def put(self, request, organization_id ,*args, **kwargs):
-        qrcode_instance = self.get_object(organization_id)
-        get_current_organization = CustomUser.organization.filter(email=request.user)
-        organization_user_id = list(get_current_organization.values('id'))[0]['id']
-        if get_current_organization:
-            if not qrcode_instance:
-                data = { 
-                    'organization': organization_user_id,
-                    'UUID': generate_random_uuid(),
-                }
-                serializer =  self.serializer_class(data=data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_200_OK)
-                
-            data = { 
-                'UUID': generate_random_uuid(),
-            }
-            
-            serializer =  GenerateQrcodeView.serializer_class(instance=qrcode_instance, data=data, partial = True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def perform_update(self, serializer):
+        current_organization = self.get_object()
+        qrcode_instance = Qrcode.objects.get(organization=current_organization)
+        if not qrcode_instance:
+            return Response(serializer.save(organization=current_organization, UUID=generate_random_uuid()),status=status.HTTP_200_OK)
+        return Response(serializer.save(UUID=generate_random_uuid()), status=status.HTTP_200_OK)
 
 #GetQRcodeUUIDView
 class GetQrcodeIdView(APIView):
     serializer_class = QrcodeSerializer
     permission_classes = [IsWorker&permissions.IsAuthenticated]
-    def get(self, request, organization_id):
+    def get(self, request):
         qrcode_instance = Qrcode.objects.filter(organization=organization_id)
         qrcode_uuid = list(qrcode_instance.values('UUID'))[0]['UUID']
         if not qrcode_instance:
@@ -255,33 +237,21 @@ class TimeRecordView(APIView):
 
 
 class AttendanceRecordView(APIView):
-    def get_object(self, organization_id):
-        try:
-            return list(Workers.objects.filter(organization = organization_id).values('user_id', 'first_name', 'last_name'))
-        except Workers.DoesNotExist:
-            return None
+    queryset = Attendance.objects.all()
     serializer_class= AttendanceSerializer
     permission_classes = [IsOrganization&permissions.IsAuthenticated]
     
-    def get(self, request):
-        current_user_id = request.user.id
-        organization_id = list(Organizations.objects.filter(user=current_user_id).values('id'))[0]['id']
-        workers_instances = self.get_object(organization_id)
-        organization_workers_id = []
-        for worker in workers_instances:
-            organization_workers_id.append(worker['user_id'])
-        workers_attendance = []
-        all_attendance = list(Attendance.objects.all())
-        for attendance in all_attendance:
-            worker_attendance = {}
-            if attendance.worker.id in organization_workers_id:
-                first_name = list(Workers.objects.filter(user_id = attendance.worker.id).values('first_name'))[0]['first_name']
-                last_name = list(Workers.objects.filter(user_id = attendance.worker.id).values('last_name'))[0]['last_name']
-                worker_attendance['name'] = first_name + last_name
-                worker_attendance['date'] = attendance.date
-                worker_attendance['clock_in'] = attendance.clock_in
-                worker_attendance['clock_out'] = attendance.clock_out
-                workers_attendance.append(worker_attendance)
-            
-        return Response(workers_attendance, status=status.HTTP_200_OK)
+    def get_object(self):
+        user_obj = self.request.user
+        organization = Organizations.objects.get(user=user_obj)
+        return organization
+    
+    def get_queryset(self):
+        organization = self.get_object(self)
+        workers= Workers.objects.filter(organization=organization)
+        all_attendance = []
+        for worker in workers:
+            attendance = self.queryset.filter(worker=worker)
+            all_attendance.append(attendance)
+        return Response(all_attendance, status=status.HTTP_200_OK)
     
