@@ -188,11 +188,18 @@ class GenerateQrcodeView(UpdateAPIView):
         organization = Organizations.objects.get(user=user_obj)
         return organization
     
-    def perform_update(self, serializer):
+    def update(self, request, *args, **kwargs):
         current_organization = self.get_object()
         qrcode_instance = Qrcode.objects.get(organization=current_organization)
         if not qrcode_instance:
-            return Response(serializer.save(organization=current_organization, UUID=generate_random_uuid()),status=status.HTTP_200_OK)
+            data = {
+                'organization' : current_organization,
+                'UUID' : generate_random_uuid(),
+            }
+            serializer = self.serializer_class(data=data)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(qrcode_instance, data=request.data, partial=True)
         return Response(serializer.save(UUID=generate_random_uuid()), status=status.HTTP_200_OK)
 
 #GetQRcodeUUIDView
